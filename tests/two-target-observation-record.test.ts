@@ -39,10 +39,25 @@ interface ReceiptFixture {
   scope: string;
 }
 
+type ObservationRecordFixture = Record<
+  string,
+  {
+    targetId: string;
+    contextLabel: string;
+    receipt: ReceiptFixture;
+  }
+>;
+
 interface ObservationModule {
   TwoTargetObservationRecord: React.ComponentType<{
     observations: Record<string, unknown>;
     activeTarget: "1stp" | "3ce3";
+    contactTransferState: {
+      lockedPrediction: null;
+      firstResult: null;
+      threeCeThreeViewedBeforeLock: boolean;
+    };
+    onLockContactPrediction: () => void;
     onSelectTarget: (targetId: "1stp" | "3ce3") => void;
   }>;
   summarizeTargetLocalOutcome(receipt: ReceiptFixture): {
@@ -55,10 +70,7 @@ interface ObservationModule {
     targetId: "1stp" | "3ce3",
     contextLabel: string,
     receipt: ReceiptFixture,
-  ): Record<
-    string,
-    { targetId: string; contextLabel: string; receipt: ReceiptFixture }
-  >;
+  ): ObservationRecordFixture;
 }
 
 const componentUrl = new URL(
@@ -155,7 +167,7 @@ test("upsert records either completion order without transposing targets", () =>
   const oneStpReceipt = makeReceipt({ contactDelta: 2 });
   const threeCeThreeReceipt = makeReceipt({ contactDelta: -1 });
 
-  let forward: Record<string, unknown> = {};
+  let forward: ObservationRecordFixture = {};
   forward = observationModule.upsertTargetObservation(
     forward,
     "1stp",
@@ -169,7 +181,7 @@ test("upsert records either completion order without transposing targets", () =>
     threeCeThreeReceipt,
   );
 
-  let reverse: Record<string, unknown> = {};
+  let reverse: ObservationRecordFixture = {};
   reverse = observationModule.upsertTargetObservation(
     reverse,
     "3ce3",
@@ -265,6 +277,12 @@ test("render is scoped, accessible, and omits aggregates and raw scores", () => 
     React.createElement(observationModule.TwoTargetObservationRecord, {
       observations,
       activeTarget: "3ce3",
+      contactTransferState: {
+        lockedPrediction: null,
+        firstResult: null,
+        threeCeThreeViewedBeforeLock: false,
+      },
+      onLockContactPrediction() {},
       onSelectTarget() {},
     }),
   );
@@ -299,11 +317,42 @@ test("empty records render nothing", () => {
     React.createElement(observationModule.TwoTargetObservationRecord, {
       observations: {},
       activeTarget: "1stp",
+      contactTransferState: {
+        lockedPrediction: null,
+        firstResult: null,
+        threeCeThreeViewedBeforeLock: false,
+      },
+      onLockContactPrediction() {},
       onSelectTarget() {},
     }),
   );
 
   assert.equal(html, "");
+});
+
+test("prior 3CE3 exposure restores the ordinary continuation path", () => {
+  const observations = observationModule.upsertTargetObservation(
+    {},
+    "1stp",
+    "1STP · streptavidin / biotin",
+    makeReceipt(),
+  );
+  const html = renderToStaticMarkup(
+    React.createElement(observationModule.TwoTargetObservationRecord, {
+      observations,
+      activeTarget: "1stp",
+      contactTransferState: {
+        lockedPrediction: null,
+        firstResult: null,
+        threeCeThreeViewedBeforeLock: true,
+      },
+      onLockContactPrediction() {},
+      onSelectTarget() {},
+    }),
+  );
+
+  assert.doesNotMatch(html, /Blind transfer lab/);
+  assert.match(html, /Continue with 3CE3/);
 });
 
 test("component has no storage or network path and CTA meets touch sizing", async () => {
@@ -319,6 +368,8 @@ test("component has no storage or network path and CTA meets touch sizing", asyn
   assert.match(stylesheet, /min-height:\s*44px/);
   assert.match(stylesheet, /@media \(max-width: 560px\)/);
   assert.match(experience, /useState<TwoTargetObservations>\(\{\}\)/);
+  assert.match(experience, /useState<ContactTransferState>/);
+  assert.match(experience, /captureFirstContactTransferResult\(/);
   assert.match(experience, /upsertTargetObservation\(/);
   assert.match(experience, /onComplete=\{handleLearningComplete\}/);
   assert.match(experience, /<TwoTargetObservationRecord/);

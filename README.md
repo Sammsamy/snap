@@ -2,7 +2,7 @@
 
 **Grab a real small molecule, fit it into a prepared protein pocket, and watch an authentic AutoGrid4 pose score respond in real time.**
 
-SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. It ships two pinned AutoDock-GPU benchmarks: streptavidin–biotin from PDB 1STP and c-MET kinase with experimental inhibitor 1FN from PDB 3CE3. Move either rigid ligand, inspect candidate contacts and steric overlaps, then reveal its prepared co-crystal input pose. The same browser engine samples a separate target-specific field for each system. An optional atom contribution lens colors the ligand by current-minus-challenge score changes and verifies, at displayed precision, that the atom deltas sum back to the pose delta.
+SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. It ships two pinned AutoDock-GPU benchmarks: streptavidin–biotin from PDB 1STP and c-MET kinase with experimental inhibitor 1FN from PDB 3CE3. Move either rigid ligand, inspect candidate contacts and steric overlaps, then reveal its prepared co-crystal input pose. The same browser engine samples a separate target-specific field for each system. An optional atom contribution lens colors the ligand by current-minus-challenge score changes and verifies, at displayed precision, that the atom deltas sum back to the pose delta. A blind transfer lab then exposes a counterintuitive 3CE3 result: the local score improves even though candidate-contact count falls.
 
 The score runs entirely in the browser. There is no API call, server calculation, account, paid credit, or model in the interaction loop.
 
@@ -48,12 +48,13 @@ The 3CE3 controlled path changes from `+145.80 / 17 clashes / 4 candidate contac
 4. Turn on **Atom contribution lens**. The three largest modeled per-ligand-atom changes are exposed, and a rounding-aware conservation line verifies `Σ atom Δ = pose Δ` at displayed precision.
 5. Load the exact challenge pose, then run the controlled **Predict → Reveal → Explain** task before inspecting the answer elsewhere.
 6. See the molecule converge on the prepared co-crystal input and the score settle at approximately −8.97.
-7. Receive a local task receipt based on the observed score, clash, and candidate-contact deltas, then inspect the proof controls.
-8. Switch to **3CE3 · c-MET kinase · 1FN** and confirm that the same engine loads a separate field, starts at +145.80, and reveals −11.64.
+7. Receive a local task receipt, then lock a blind prediction about whether candidate-contact count will rise, stay level, or fall on the second target.
+8. Open **3CE3 · c-MET kinase · 1FN**, run the same controlled reveal, and inspect the target-local `+145.80 → −11.64`, `17 → 1` overlap, and `4 → 3` candidate-marker result.
+9. Read the counterexample: candidate-marker count fell while the AutoGrid score improved, so the separate geometry overlay cannot determine the scorer.
 
 Keyboard controls are built in: arrows translate, Page Up/Page Down move in depth, Shift + arrows rotate, and Q/E roll. The stage respects reduced-motion preferences.
 
-The learning task captures one deterministic comparison for the selected target: the exact 15° reset pose to the locked prepared reference. It grades the prediction against the score and clash changes that actually occurred. A page-memory observation record can retain one labelled receipt per target while the page remains open; it clears on refresh, transmits nothing, never combines the target-specific scores, and is explicitly not evidence of competence, learning efficacy, or clinical validation.
+The learning task captures one deterministic comparison for the selected target: the exact 15° reset pose to the locked prepared reference. It grades the prediction against the score and clash changes that actually occurred. After a 1STP receipt, the blind transfer lab can lock one immutable candidate-contact prediction before 3CE3 is viewed or completed; selecting 3CE3 first permanently disables the blind path for that page session. Its first controlled result is retained even if the task is rerun. A page-memory observation record can retain one labelled receipt per target while the page remains open; it clears on refresh, transmits nothing, never combines the target-specific scores, and is explicitly not evidence of competence, learning efficacy, or clinical validation.
 
 The contribution lens is equally bounded. It reports each ligand atom's change in AutoGrid map, electrostatic, and desolvation contributions relative to that target's disclosed challenge pose. It does not assign energies to receptor residues, predict affinity, or compare targets. The implementation fails closed unless every atom is inside the grid and all per-atom term sums conserve the scorer-owned total within a rounding-aware tolerance.
 
@@ -102,6 +103,7 @@ Important files:
 - `app/components/MolecularStage.tsx` — instanced molecular rendering, drag/rotate controls, contacts, pocket glow, and reduced-motion support.
 - `app/components/SnapExperience.tsx` — asset hydration, scoring policy, reveal animation, audio cue, and explanatory UI.
 - `app/components/TwoTargetObservationRecord.tsx` — page-memory, target-labelled task receipts with no score aggregation or persistence.
+- `app/components/ContactCountTransferLab.tsx` — immutable blind contact-count prediction, fail-closed 3CE3 result capture, and the target-local counterexample panel.
 - `scripts/prepare_1stp.py` — reproducible public-data preparation.
 - `scripts/validate_1stp_assets.py` — hashes, coordinate checks, binary/JSON parity, and reference/decoy score checks.
 - `VIDEO_SCRIPT.md`, `SUBMISSION.md`, and `JUDGE_QA.md` — the recording script, Devpost copy, release checklist, and hostile-question guardrails.
@@ -114,6 +116,7 @@ Important files:
 - `tests/second-system.test.ts` — public-file hashes, channel layout, all-atoms-in-grid checks, and exact four-pose 3CE3 verification.
 - `tests/contribution-lens.test.ts` — atom identity/order checks, cross-system rejection, accessible tone mapping, ranking, and conservation invariants.
 - `tests/two-target-observation-record.test.ts` — target-safe upserts, both completion orders, wrong-response retention, accessible markup, and no-storage checks.
+- `tests/contact-transfer-lab.test.ts` — blind-result withholding, exact 3CE3 deltas, first-attempt immutability, fail-closed path validation, and overclaim boundaries.
 - `research/second-system/` — pinned upstream inputs, preparation/build scripts, manifests, licenses, and independent release-candidate verifiers for 3CE3.
 
 ## Run locally
@@ -150,7 +153,7 @@ Codex helped the team:
 - build the Three.js interaction stage, keyboard access, reduced-motion behavior, and responsive interface;
 - design and adversarially test the controlled predict–reveal–explain task;
 - derive and test a per-ligand-atom contribution lens whose deltas conserve every displayed score term;
-- turn the two guided tasks into one coherent page-memory observation record without implying mastery or learning efficacy;
+- turn the two guided tasks into one coherent page-memory observation record and a blind contact-count transfer check without implying mastery or learning efficacy;
 - run separate science, licensing, hostile-judge, copy, and live-browser audits;
 - catch the single-chain biological-assembly limitation, an interpolation-boundary mismatch, false clash labels, and a misleading cross-target visual scale before release.
 

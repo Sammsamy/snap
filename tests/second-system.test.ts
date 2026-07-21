@@ -6,6 +6,7 @@ import test from "node:test";
 import {
   IDENTITY_POSE,
   quaternionFromAxisAngle,
+  scorePose,
   scorePoseWithAutoGrid,
   type AutoGridMapSet,
   type LigandPose,
@@ -212,6 +213,7 @@ test("public 3CE3 assets preserve the exact audited four-pose AutoGrid panel", a
   };
 
   const ligand = system.ligand.atoms.map(asMolecularAtom);
+  const receptor = system.receptor.atoms.map(asMolecularAtom);
   const pivot = vector(system.frame.referenceLigandCentroid);
   const poses: Record<keyof typeof EXPECTED_POSES, LigandPose> = {
     reference: IDENTITY_POSE,
@@ -243,4 +245,15 @@ test("public 3CE3 assets preserve the exact audited four-pose AutoGrid panel", a
   }
 
   assert.equal(system.scoring.referencePoseScore, EXPECTED_POSES.reference.total);
+
+  const challengeGeometry = scorePose(
+    receptor,
+    ligand,
+    poses.rotated_z_15deg,
+  );
+  const referenceGeometry = scorePose(receptor, ligand, poses.reference);
+  assert.equal(challengeGeometry.clashes.count, 17);
+  assert.equal(referenceGeometry.clashes.count, 1);
+  assert.equal(challengeGeometry.hydrogenBonds.length, 4);
+  assert.equal(referenceGeometry.hydrogenBonds.length, 3);
 });

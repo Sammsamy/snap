@@ -62,6 +62,10 @@ The underlying scoring science is not new, and interactive molecular systems hav
 
 SNAP now asks learners to predict a controlled contrast, observe it, and explain only what it supports on either target. The two-target observation record merely retains completed task receipts while the page is open; it is not a badge, mastery score, or competence measure. A real learning product would measure pre/post performance and transfer across learners and systems. This release demonstrates the task and scoring instrument, not learning efficacy.
 
+## Why add the contact-count transfer lab?
+
+It turns the second target into a falsifiable counterexample rather than a repeated animation. A first prediction is locked before 3CE3 is viewed; selecting 3CE3 first disables the blind path for that page session. Its target-local score changes from `+145.80` to `−11.64` while candidate markers fall from four to three. That shows why the separate geometric marker count cannot determine the AutoGrid score. The page preserves only this first single-session result until refresh; it does not establish mastery, learning efficacy, or cross-target affinity.
+
 ## What is the one-sentence pitch?
 
 SNAP lets you move a real small molecule through a real protein pocket and watch a prepared local interaction score, clashes, and candidate contacts respond instantly in your browser.

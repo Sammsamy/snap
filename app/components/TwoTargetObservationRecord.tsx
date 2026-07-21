@@ -2,6 +2,11 @@
 
 import { useId } from "react";
 import type { LearningChallengeReceipt } from "./LearningChallenge";
+import {
+  ContactCountTransferLab,
+  type CandidateContactPrediction,
+  type ContactTransferState,
+} from "./ContactCountTransferLab";
 import "./two-target-observation-record.css";
 
 export type ObservationTargetId = "1stp" | "3ce3";
@@ -19,6 +24,10 @@ export type TwoTargetObservations = Partial<
 export interface TwoTargetObservationRecordProps {
   observations: TwoTargetObservations;
   activeTarget: ObservationTargetId;
+  contactTransferState: Readonly<ContactTransferState>;
+  onLockContactPrediction: (
+    prediction: CandidateContactPrediction,
+  ) => void;
   onSelectTarget: (targetId: ObservationTargetId) => void;
 }
 
@@ -101,12 +110,16 @@ export function upsertTargetObservation(
 export function TwoTargetObservationRecord({
   observations,
   activeTarget,
+  contactTransferState,
+  onLockContactPrediction,
   onSelectTarget,
 }: TwoTargetObservationRecordProps) {
   const instanceId = useId();
   const observedTargets = TARGET_ORDER.filter((targetId) =>
     observationForTarget(observations, targetId),
   );
+  const oneStpObservation = observationForTarget(observations, "1stp");
+  const threeCeThreeObservation = observationForTarget(observations, "3ce3");
 
   if (observedTargets.length === 0) return null;
 
@@ -139,6 +152,15 @@ export function TwoTargetObservationRecord({
           {observedTargets.length} of 2 targets observed
         </p>
       </header>
+
+      <ContactCountTransferLab
+        oneStpReceipt={oneStpObservation?.receipt}
+        threeCeThreeReceipt={threeCeThreeObservation?.receipt}
+        activeTarget={activeTarget}
+        transferState={contactTransferState}
+        onLockPrediction={onLockContactPrediction}
+        onSelectTarget={onSelectTarget}
+      />
 
       <ul
         className="two-target-observation-record__systems"
@@ -221,7 +243,12 @@ export function TwoTargetObservationRecord({
           validation. Target-specific scores are never combined, ranked, or
           compared.
         </p>
-        {incompleteTarget && (
+        {incompleteTarget &&
+          !(
+            incompleteTarget === "3ce3" &&
+            oneStpObservation &&
+            !contactTransferState.threeCeThreeViewedBeforeLock
+          ) && (
           <button
             type="button"
             onClick={() => onSelectTarget(incompleteTarget)}

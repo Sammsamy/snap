@@ -12,7 +12,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 4. Confirm **Atom contribution lens** reports `Σ atom Δ −13.34 = pose Δ −13.34` after the 1STP reveal.
 5. Turn sound on.
 6. Keep the mouse movements slow enough to read the dial.
-7. Use a clean jump cut while completing the repeated 3CE3 task so the final two-target record remains readable for at least five seconds.
+7. Use a clean jump cut while completing the 3CE3 transfer task so the counterexample panel and final two-target record remain readable for at least five seconds.
 8. Have the repository README and the proof section ready in separate tabs.
 
 ## Script and screen actions
@@ -23,7 +23,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 **Say:**
 
-“Most of pharmacology is taught with one sentence: a small molecule fits a protein pocket. But students almost never get to touch that idea. This is SNAP.”
+“Pharmacology starts with one sentence: a small molecule fits a protein pocket. Students rarely get to touch that idea. This is SNAP.”
 
 ### 0:10 to 0:30
 
@@ -31,7 +31,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 **Say:**
 
-“This is biotin in real streptavidin from PDB 1STP. It starts fifteen degrees from the prepared pose. That small error pushes the local score to plus 4.37, creates four clashes, and changes the candidate contacts.”
+“This is biotin in real streptavidin from PDB 1STP. Just fifteen degrees off the prepared pose, the score is plus 4.37 with four clashes.”
 
 ### 0:30 to 0:43
 
@@ -39,7 +39,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 **Say:**
 
-“I can move the molecule in six degrees of freedom, and every move resamples this AutoGrid field in the browser. To test whether I understand the readout, I reset to the exact challenge pose before predicting.”
+“I can move it in six degrees of freedom. Every move resamples the local AutoGrid field in this browser. Before predicting, I reset the exact challenge.”
 
 ### 0:43 to 1:05
 
@@ -47,7 +47,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 **Say:**
 
-“Before seeing the answer, I predict that the prepared pose will lower the score and remove clashes. SNAP forces the exact reset-to-reference comparison. The result is minus 8.97 with zero clashes, a 13.34 point improvement, graded against what happened rather than a success animation.”
+“I predict the prepared pose will lower the score and clear clashes. SNAP enforces one reset-to-reference comparison. It reveals minus 8.97, zero clashes, and a 13.34 point improvement, graded from the observed readout.”
 
 ### 1:05 to 1:20
 
@@ -55,47 +55,47 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 **Say:**
 
-“Now I can ask which ligand atoms contributed most to that change. The lens subtracts each atom’s challenge contribution from its current contribution. O3 is the largest modeled contributor, and this rounding-aware line verifies the sum at displayed precision. These are not invented residue energies or affinity.”
+“The atom lens asks which ligand atoms drove that change. O3 contributes most, and this line verifies that all atom deltas sum to the pose delta at displayed precision. These are modeled ligand terms, not affinity.”
 
-### 1:20 to 1:34
+### 1:20 to 1:36
 
-**Screen:** Choose **The readout compares two prepared poses in this local model**, submit it, and briefly show the local receipt and the new `1 of 2 targets observed` record.
-
-**Say:**
-
-“I then explain what the result means. This compares prepared poses in a local model, not clinical affinity or drug discovery. The page keeps one receipt per target, but that is not a mastery score or evidence that learning occurred.”
-
-### 1:34 to 1:47
-
-**Screen:** Scroll to the proof section. Point to the three control scores and the equation.
+**Screen:** Choose **The readout compares two prepared poses in this local model**, submit it, then scroll to the 1STP proof section. Point to the three control scores and the equation.
 
 **Say:**
 
-“Here is another check. The prepared input scores minus 8.97. Moving it half an ångström gives minus 4.67. Rotating it fifteen degrees gives plus 4.37. The same scorer produces each control, with every term exposed.”
+“This supports only a local comparison, not clinical affinity or discovery. The prepared input is minus 8.97. A half-ångström move is minus 4.67. A fifteen-degree rotation is plus 4.37.”
 
-### 1:47 to 2:15
+### 1:36 to 1:48
 
-**Screen:** Use **Continue with 3CE3**, press **Start fitting**, and show `+145.80 / 17 clashes / 4 candidates`. Use a clean jump cut through the same controlled task, reveal `−11.64 / 1 clash / 3 candidates`, then hold on the complete `2 of 2 targets observed` record for at least five seconds.
-
-**Say:**
-
-“This is not a one-molecule trick. PDB 3CE3 loads a separate c-MET field through the same scorer. Experimental inhibitor 1FN moves from plus 145.80 to minus 11.64, with five torsions frozen. After repeating the task, both receipts remain on this page. Their scores are never combined or compared as affinity.”
-
-### 2:15 to 2:34
-
-**Screen:** Show the README section named “How GPT-5.6 and Codex were used,” then briefly show the scoring tests or terminal result.
+**Screen:** Return to the blind transfer lab. Choose **Increase**, then press **Lock prediction and open 3CE3**.
 
 **Say:**
 
-“We built SNAP with GPT-5.6 in Codex. It helped prepare and audit the public molecular assets, implement the trilinear scorer and atom conservation checks, test the geometry, and attack our claims. The runtime needs no paid model call. Scoring stays local after the assets load.”
+“Before opening a different target, I lock the tempting shortcut that a better fit must show more candidate contacts.”
 
-### 2:34 to 2:48
+### 1:48 to 2:16
+
+**Screen:** Press **Start fitting** on 3CE3 and show `+145.80 / 17 clashes / 4 candidates`. Use a clean jump cut through the controlled task, reveal `−11.64 / 1 clash / 3 candidates`, then hold on **The contact-count shortcut breaks** and the complete `2 of 2 targets observed` record for at least five seconds.
+
+**Say:**
+
+“PDB 3CE3 loads a separate c-MET field through the same scorer. Experimental inhibitor 1FN goes from plus 145.80 to minus 11.64, but candidate markers fall from four to three. That breaks the shortcut: the geometry overlay does not determine the score. Target scores are never compared as affinity.”
+
+### 2:16 to 2:35
+
+**Screen:** Show the README section named **GPT-5.6 and Codex collaboration**, then briefly show the scoring tests or terminal result.
+
+**Say:**
+
+“We built SNAP with GPT-5.6 in Codex. It helped prepare and audit the public assets, implement the trilinear scorer and conservation checks, test the geometry, and attack our claims. Runtime scoring stays local and needs no paid model call.”
+
+### 2:35 to 2:49
 
 **Screen:** Return to the glowing revealed complex and SNAP wordmark.
 
 **Say:**
 
-“SNAP is two rigid teaching systems behind one transparent engine. It does not predict affinity, and it is not docking software. It is a free browser instrument for building molecular intuition by moving a pose, breaking it, predicting the result, and checking it against experiment.”
+“SNAP is two rigid teaching systems behind one transparent engine. It is not affinity prediction or docking software. It is a free browser instrument for building molecular intuition by moving, predicting, and checking a pose against experiment.”
 
 End on the SNAP wordmark for two seconds.
 
@@ -111,4 +111,5 @@ End on the SNAP wordmark for two seconds.
 - Keep the score dial visible during the reveal.
 - Keep the atom lens conservation line visible long enough to read.
 - Keep the final two-target observation record visible for at least five seconds.
+- Keep the target-local contact-count counterexample panel visible long enough to read `+145.80 → −11.64` and `4 → 3`.
 - If a drag goes badly, restart the take. The clean proof is more important than improvisation.

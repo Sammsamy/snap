@@ -38,7 +38,7 @@ https://github.com/Sammsamy/snap
 
 ## Short description
 
-SNAP is a browser instrument for molecular recognition. A user can move and rotate a rigid ligand inside either of two prepared protein pockets while the same client-side AutoGrid scorer updates on every move. The default 1STP streptavidin–biotin system teaches a canonical fit; a selectable 3CE3 c-MET system shows that the engine generalizes to a separate target-specific field for experimental inhibitor 1FN. Steric clashes flash red, plausible candidate contacts appear in cyan, an atom contribution lens shows the largest modeled ligand-atom contributors to the score change, and a controlled predict–reveal–explain task grades the user against changes that actually occurred.
+SNAP is a browser instrument for molecular recognition. A user can move and rotate a rigid ligand inside either of two prepared protein pockets while the same client-side AutoGrid scorer updates on every move. The default 1STP streptavidin–biotin system teaches a canonical fit; a selectable 3CE3 c-MET system uses a separate target-specific field for experimental inhibitor 1FN. Steric clashes flash red, plausible candidate contacts appear in cyan, an atom contribution lens shows the largest modeled ligand-atom contributors, and a blind transfer lab reveals that a better local score can coexist with fewer candidate contacts.
 
 ## Inspiration
 
@@ -50,7 +50,7 @@ SNAP loads two authentic prepared benchmarks: 1STP streptavidin–biotin and 3CE
 
 The 1STP path starts from a disclosed 15 degree control at `+4.37` and reveals the prepared input at `−8.97`; a half ångström translation scores `−4.67`. The 3CE3 path starts at `+145.80` with 17 clashes and reveals `−11.64` with one clash; audited translations score `−0.09` and `+3.03`. These controls are visible so a judge can test that the response is not a distance animation or hard-coded success state. Scores are target-specific and are never compared between systems as affinity.
 
-SNAP also renders candidate hydrogen-bond geometry, steric clashes, residue names, contact distances, and individual score terms. Its optional atom lens computes current-minus-challenge deltas for every ligand atom and fails closed unless those atom deltas verify against every scorer-owned term and the total within a rounding-aware tolerance. Its guided task starts only from the exact reset pose, permits only the prepared-reference reveal as the graded action, and produces a target-labelled receipt. The open page can retain one receipt per system in a two-target observation record; it clears on refresh and never combines the target-specific scores. Both systems are rigid prepared teaching models. SNAP does not search poses, predict affinity, prove learning efficacy, or replace docking software.
+SNAP also renders candidate hydrogen-bond geometry, steric clashes, residue names, contact distances, and individual score terms. Its optional atom lens computes current-minus-challenge deltas for every ligand atom and fails closed unless those atom deltas verify against every scorer-owned term and the total within a rounding-aware tolerance. Its guided task starts only from the exact reset pose, permits only the prepared-reference reveal as the graded action, and produces a target-labelled receipt. After 1STP, a blind first prediction asks whether 3CE3 candidate-marker count will rise, stay level, or fall; viewing 3CE3 first disables that blind path for the page session. The audited result is `+145.80 → −11.64` while markers change `4 → 3`, directly falsifying the shortcut that more candidate contacts must determine a better score. The open page retains the first transfer result and one receipt per system until refresh; it never combines target scores. SNAP does not search poses, predict affinity, prove learning efficacy, or replace docking software.
 
 ## How we built it
 
@@ -58,6 +58,7 @@ SNAP also renders candidate hydrogen-bond geometry, steric clashes, residue name
 - Public 1STP and 3CE3 coordinates with pinned prepared AutoDock-GPU benchmark maps
 - Exact x-fast trilinear interpolation over eight client-side AutoGrid channels
 - A per-ligand-atom contribution lens with same-target guards and rounding-aware score-conservation checks at displayed precision
+- A blind, first-attempt-preserving 3CE3 transfer lab built around an audited contact-count counterexample
 - A separate bounded interaction pass for explanatory clash and hydrogen bond markers
 - Reproducible Python preparation and validation scripts with recorded SHA-256 hashes
 - Browser, rendered-shell, deterministic scoring, boundary, and scientific-control tests
@@ -80,6 +81,7 @@ We also found boundaries during the audit that the interface now states directly
 - A color-and-text atom contribution lens whose displayed atom deltas pass a rounding-aware check against the displayed pose delta
 - Visible residue identities, distances, clashes, and score components
 - A controlled predict–reveal–explain task with an observed-delta receipt and page-memory two-target record
+- A target-local transfer result showing score improvement despite fewer candidate-contact markers
 - Two selectable prepared targets using one scoring implementation and separate audited fields
 - Reproducible assets with checksums and independent validation controls
 - Honest product boundaries inside the interface, not hidden in fine print
@@ -90,7 +92,7 @@ Scientific interfaces earn trust when users can falsify them. The most valuable 
 
 ## What is next
 
-The next version would repeat the guided task with learners to test transfer across systems and add an export path into a full docking workflow. Complete biological assemblies, explicit water handling, and flexible-ligand exploration would require separately prepared and validated models. Those are future extensions, not claims about this release.
+The next version would run the guided task and blind transfer lab with learners to measure retention and transfer, then add an export path into a full docking workflow. Complete biological assemblies, explicit water handling, and flexible-ligand exploration would require separately prepared and validated models. Those are future extensions, not claims about this release.
 
 ## Built with
 
@@ -106,10 +108,11 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 6. Run the graded path: locked prediction → prepared-pose reveal → captured observation → evidence-bounded explanation.
 7. Confirm the reveal settles at `−8.97` with zero clash markers and produces a local 2-of-2 task receipt for the correct path.
 8. Only then scroll to **The heavy-atom pose came from experiment. The score did not.**, compare the disclosed control scores, and inspect the formula.
-9. Select **3CE3 · c-MET kinase · 1FN**, press **Start fitting**, and confirm `+145.80 / 17 clashes / 4 candidates`.
-10. Complete the second controlled task, confirm `−11.64 / 1 clash / 3 candidates`, and inspect the two-target observation record. Each card stands alone; no scores are combined or compared.
-11. Switch back to 1STP and confirm its completed page-memory record remains while the active task resets cleanly.
-12. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
+9. In the blind transfer lab, lock one candidate-marker prediction before opening **3CE3 · c-MET kinase · 1FN**.
+10. Press **Start fitting** and confirm `+145.80 / 17 clashes / 4 candidates`, then complete the controlled task and reveal `−11.64 / 1 clash / 3 candidates`.
+11. Inspect the target-local counterexample panel and two-target observation record. The 3CE3 score improves while candidate markers fall; no target scores are combined or compared.
+12. Switch back to 1STP and confirm its completed page-memory record remains while the active task resets cleanly.
+13. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
 
 ## Final submission checklist
 

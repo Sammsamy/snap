@@ -41,6 +41,14 @@ import {
   type TwoTargetObservations,
 } from "./TwoTargetObservationRecord";
 import {
+  captureFirstContactTransferResult,
+  EMPTY_CONTACT_TRANSFER_STATE,
+  lockContactTransferPrediction,
+  recordThreeCeThreeExposure,
+  type CandidateContactPrediction,
+  type ContactTransferState,
+} from "./ContactCountTransferLab";
+import {
   scorePose,
   scorePoseWithAutoGrid,
   type AutoGridMapSet,
@@ -912,6 +920,8 @@ export function SnapExperience() {
   const [atomLensEnabled, setAtomLensEnabled] = useState(false);
   const [targetObservations, setTargetObservations] =
     useState<TwoTargetObservations>({});
+  const [contactTransferState, setContactTransferState] =
+    useState<ContactTransferState>(EMPTY_CONTACT_TRANSFER_STATE);
   const [hasMoved, setHasMoved] = useState(false);
   const [scoreTrace, setScoreTrace] = useState<number[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -923,6 +933,11 @@ export function SnapExperience() {
   const handleTargetSelect = useCallback(
     (targetId: TargetId) => {
       if (targetId === selectedTarget) return;
+      if (targetId === "3ce3") {
+        setContactTransferState((current) =>
+          recordThreeCeThreeExposure(current),
+        );
+      }
       if (revealFrame.current !== null) {
         cancelAnimationFrame(revealFrame.current);
         revealFrame.current = null;
@@ -961,8 +976,22 @@ export function SnapExperience() {
           receipt,
         ),
       );
+      if (selectedTarget === "3ce3") {
+        setContactTransferState((current) =>
+          captureFirstContactTransferResult(current, receipt),
+        );
+      }
     },
     [activeTarget.observationContextLabel, selectedTarget],
+  );
+
+  const handleLockContactPrediction = useCallback(
+    (prediction: CandidateContactPrediction) => {
+      setContactTransferState((current) =>
+        lockContactTransferPrediction(current, prediction),
+      );
+    },
+    [],
   );
 
   useEffect(() => {
@@ -1618,6 +1647,8 @@ export function SnapExperience() {
       <TwoTargetObservationRecord
         observations={targetObservations}
         activeTarget={selectedTarget}
+        contactTransferState={contactTransferState}
+        onLockContactPrediction={handleLockContactPrediction}
         onSelectTarget={handleObservationTargetSelect}
       />
 
