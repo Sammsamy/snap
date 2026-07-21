@@ -1,6 +1,6 @@
 # SNAP submission package
 
-This file is working copy. Replace every bracketed placeholder before submission.
+This file is working copy. Replace every bracketed placeholder before submission. The deadline is July 21, 2026 at 5:00 PM PDT / 7:00 PM CDT. Keep the free demo available through judging, which ends August 5 at 5:00 PM PDT.
 
 ## Recommended Devpost fields
 
@@ -8,13 +8,23 @@ This file is working copy. Replace every bracketed placeholder before submission
 
 SNAP
 
-**Tagline**
+**Submitter type**
 
-Touch molecular recognition. Move a real small molecule through a real protein pocket and watch a local AutoGrid score respond instantly.
+Individual
 
-**Category**
+**Country of residence**
+
+United States
+
+**Elevator pitch** (200 characters maximum)
+
+Turn molecular recognition into something you can touch. Move the molecule, break the fit, and watch a transparent local score respond in real time.
+
+**Category / track**
 
 Education
+
+The other official choices are Apps for Your Life, Work & Productivity, and Developer Tools.
 
 **Team**
 
@@ -28,21 +38,45 @@ https://snap-binding.sammsamy.chatgpt.site
 
 https://github.com/Sammsamy/snap
 
+Enter the same URL again in the required private **Additional Info — repository URL** field.
+
 **Public YouTube video**
 
 `[PUBLIC_YOUTUBE_URL]`
 
-**Codex Session ID**
+**/feedback Session ID where the majority of your project was worked on**
 
 `019f48c7-345a-70d3-bf51-81bbc847143b`
 
-## Short description
+Verify this exact value by running `/feedback` in the primary Build Week task before submission.
 
-SNAP is a browser instrument for molecular recognition. A user can move and rotate a rigid ligand inside either of two prepared protein pockets while the same client-side AutoGrid scorer updates on every move. The default 1STP streptavidin–biotin system teaches a canonical fit; a selectable 3CE3 c-MET system uses a separate target-specific field for experimental inhibitor 1FN. Steric clashes flash red, plausible candidate contacts appear in cyan, an atom contribution lens shows the largest modeled ligand-atom contributors, and a blind transfer lab reveals that a better local score can coexist with fewer candidate contacts.
+**Built with** (required, 25 tags maximum)
+
+GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, AutoGrid, RCSB PDB, Cloudflare Workers
+
+**Judge testing instructions** (optional, visible only to judges and managers)
+
+Open https://snap-binding.sammsamy.chatgpt.site with no login. Run the 1STP Predict → Reveal task, enable the atom contribution lens, then lock a candidate-marker prediction before opening 3CE3. The prepared results are `+4.37 → −8.97` for 1STP and `+145.80 / 17 clashes / 4 markers → −11.64 / 1 clash / 3 markers` for 3CE3. Source, deterministic controls, checksums, and scientific limits are at https://github.com/Sammsamy/snap.
+
+**Final agreement**
+
+Check the required box agreeing to the Official Rules and Devpost Terms only after the final form audit.
+
+## About the project
+
+### Opening
+
+Grab biotin inside a prepared streptavidin pocket. As you translate or rotate it, a client-side AutoGrid score, red steric-overlap flags, and cyan candidate contacts respond on every move.
+
+SNAP turns a static pharmacology diagram into a zero-install, falsifiable browser instrument. Two pinned PDB systems run through one transparent scoring implementation with separate target-specific fields. A Predict → Reveal → Explain task compares a 15 degree challenge pose with the prepared PDB-derived reference. An atom lens verifies that ligand-atom deltas sum to the pose delta. Then a blind c-MET transfer check exposes the counterexample: the score improves while candidate markers fall.
+
+SNAP is designed for pose-level intuition. It is not docking, affinity prediction, or a clinical tool.
 
 ## Inspiration
 
-The central idea in pharmacology is easy to say and hard to feel: molecular shape and chemistry determine whether a ligand can sit favorably inside a protein pocket. Students usually meet that idea through static diagrams. We wanted to turn it into a direct, falsifiable interaction that runs in an ordinary browser.
+One of pharmacology's central abstractions is also one of its least tactile: how a small molecule sits inside a protein pocket. Students are asked to reason about shape complementarity, steric overlap, electrostatics, and hydrogen-bond geometry from flat figures.
+
+As a medical student, I wanted a way to move the molecule, commit to a prediction, and inspect exactly what changed. SNAP asks whether an ordinary browser can turn that abstraction into a manipulable, falsifiable experiment without pretending to perform predictive docking.
 
 ## What it does
 
@@ -74,17 +108,12 @@ We also found boundaries during the audit that the interface now states directly
 
 ## Accomplishments
 
-- A smooth six degree of freedom molecular interaction in a zero-install browser page
-- A real prepared scoring field that reacts continuously rather than a distance-to-answer heuristic
-- A dramatic and reproducible `+4.37` to `−8.97` reveal path
-- A live pose trace that makes the 13.34 point improvement visible during the reveal
-- A color-and-text atom contribution lens whose displayed atom deltas pass a rounding-aware check against the displayed pose delta
-- Visible residue identities, distances, clashes, and score components
-- A controlled predict–reveal–explain task with an observed-delta receipt and page-memory two-target record
-- A target-local transfer result showing score improvement despite fewer candidate-contact markers
-- Two selectable prepared targets using one scoring implementation and separate audited fields
-- Reproducible assets with checksums and independent validation controls
-- Honest product boundaries inside the interface, not hidden in fine print
+- Built a zero-install, six-degree-of-freedom molecular instrument where every ligand move updates a client-side AutoGrid score, overlap flags, and candidate contacts.
+- Shipped two pinned public benchmarks, 1STP streptavidin–biotin and 3CE3 c-MET–1FN, using one scoring implementation with separately audited target-specific fields.
+- Made the result falsifiable. The 1STP challenge reproducibly moves from `+4.37` to `−8.97`, nearby controls score differently, and public tests reproduce the exact score and geometry values.
+- Built an atom contribution lens that fails closed unless its displayed ligand-atom deltas conserve back to every scorer-owned term and the total.
+- Turned the second target into a prediction rather than a repeated animation. On 3CE3, the score improves from `+145.80` to `−11.64` while candidate markers fall from four to three.
+- Published reproducible assets, checksums, source code, explicit model limits, and tests. Runtime scoring remains local and requires no API key or paid model call.
 
 ## What we learned
 
@@ -124,15 +153,20 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 - [x] Confirm the public link works with no API key.
 - [x] Create the public repository and confirm the README renders correctly.
 - [x] Record and visually audit the clean 1280 by 720 screen master.
-- [ ] Record a real voiceover using `VIDEO_SCRIPT.md`.
+- [x] Record or synthesize a clear voiceover using `VIDEO_SCRIPT.md`; the official FAQ permits AI-assisted narration.
 - [ ] Upload a public YouTube video shorter than three minutes with audio.
 - [ ] Replace the remaining YouTube URL placeholder in this file.
-- [ ] Include the Codex Session ID in the required submission field.
+- [ ] Include the verified `/feedback` Session ID in the exact required submission field.
 - [ ] Select the Education category.
 - [ ] Verify that the submitted Session ID is the `/feedback` ID from the primary Build Week thread.
-- [ ] Confirm every team, eligibility, ownership, and prior-work answer is accurate.
+- [ ] Confirm **Individual**, **United States**, required built-with tags, and every eligibility and ownership answer are accurate.
+- [ ] State that SNAP is new work created during the Build Week window; if that is not true, disclose prior work and dated evidence in About/README.
+- [ ] Enter the public repository URL again in the private Additional Info repository field.
+- [ ] Paste the condensed judge test path in the optional judge-only testing field.
+- [ ] Confirm the video contains no unauthorized third-party trademarks, copyrighted music, or other copyrighted material.
+- [ ] Check the required Official Rules and Devpost Terms agreement.
 - [x] Confirm SNAP is an individual entry and do not name the brother as a teammate.
-- [ ] Ask Fuzlullah for final approval immediately before the irreversible Devpost submission.
+- [ ] Ask Fuzlullah for final approval immediately before Devpost submission. A submitted project remains editable only until the deadline; no edits are allowed afterward.
 
 ## Claims to avoid
 
