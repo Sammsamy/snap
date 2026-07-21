@@ -4,6 +4,8 @@
 
 SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. It ships two pinned AutoDock-GPU benchmarks: streptavidin–biotin from PDB 1STP and c-MET kinase with experimental inhibitor 1FN from PDB 3CE3. Move either rigid ligand, inspect candidate contacts and steric overlaps, then reveal its prepared co-crystal input pose. The same browser engine samples a separate target-specific field for each system. An optional atom contribution lens colors the ligand by current-minus-challenge score changes and verifies, at displayed precision, that the atom deltas sum back to the pose delta. A blind transfer lab then exposes a counterintuitive 3CE3 result: the local score improves even though candidate-contact count falls.
 
+SNAP was conceived and built during OpenAI Build Week; the public repository history begins July 21, 2026.
+
 The score runs entirely in the browser. There is no API call, server calculation, account, paid credit, or model in the interaction loop.
 
 **[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**

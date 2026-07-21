@@ -70,6 +70,8 @@ Grab biotin inside a prepared streptavidin pocket. As you translate or rotate it
 
 SNAP turns a static pharmacology diagram into a zero-install, falsifiable browser instrument. Two pinned PDB systems run through one transparent scoring implementation with separate target-specific fields. A Predict → Reveal → Explain task compares a 15 degree challenge pose with the prepared PDB-derived reference. An atom lens verifies that ligand-atom deltas sum to the pose delta. Then a blind c-MET transfer check exposes the counterexample: the score improves while candidate markers fall.
 
+SNAP was conceived and built during OpenAI Build Week; its public commit history begins July 21, 2026.
+
 SNAP is designed for pose-level intuition. It is not docking, affinity prediction, or a clinical tool. No physician review or clinical validation was performed, and SNAP makes no diagnostic, treatment, safety, or efficacy claim.
 
 ## Inspiration
@@ -160,7 +162,7 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 - [ ] Select the Education category.
 - [ ] Verify that the submitted Session ID is the `/feedback` ID from the primary Build Week thread.
 - [ ] Confirm **Individual**, **United States**, required built-with tags, and every eligibility and ownership answer are accurate.
-- [ ] State that SNAP is new work created during the Build Week window; if that is not true, disclose prior work and dated evidence in About/README.
+- [x] State that SNAP is new work created during the Build Week window; if that is not true, disclose prior work and dated evidence in About/README.
 - [ ] Enter the public repository URL again in the private Additional Info repository field.
 - [ ] Paste the condensed judge test path in the optional judge-only testing field.
 - [ ] Confirm the video contains no unauthorized third-party trademarks, copyrighted music, or other copyrighted material.
