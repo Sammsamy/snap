@@ -10,6 +10,10 @@ The score runs entirely in the browser. There is no API call, server calculation
 
 **[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**
 
+![SNAP live 1STP challenge view with biotin, the local score, overlaps, and candidate contacts](docs/snap-instrument-3x2.jpg)
+
+*Actual 1200 × 800 browser state from the deployed instrument; no molecule or readout is composited into this screenshot.*
+
 ## What the demo demonstrates
 
 SNAP is not a distance-to-answer trick. Each ligand atom samples the official target-specific AutoGrid maps with x-fast trilinear interpolation:

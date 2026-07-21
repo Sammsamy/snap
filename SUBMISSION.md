@@ -40,6 +40,12 @@ https://github.com/Sammsamy/snap
 
 Enter the same URL again in the required private **Additional Info — repository URL** field.
 
+**Project thumbnail / first gallery image**
+
+Use `docs/snap-instrument-3x2.jpg` (1200 × 800, exact 3:2). It is an actual deployed-app state showing the 1STP challenge, live score, overlaps, and candidate contacts.
+
+Caption (140 characters maximum): `Move biotin through prepared 1STP and watch the local score, overlap flags, and candidate contacts respond.`
+
 **Public YouTube video**
 
 `[PUBLIC_YOUTUBE_URL]`
