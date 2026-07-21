@@ -187,4 +187,4 @@ SNAP is released as a whole under **GPL-2.0-or-later**. See [`LICENSE`](LICENSE)
 
 ## Current release state
 
-The implementation, local verification, public repository, and public deployment are complete. Video recording/upload, external review, and final Devpost submission remain separate release gates and have not been represented as complete here.
+The implementation, local verification, public repository, public deployment, and audited narrated video master are complete. Public YouTube upload, `/feedback` ID verification, authenticated-form audit, and final Devpost submission remain separate release gates and have not been represented as complete here.

@@ -1,6 +1,6 @@
 # SNAP final demo script
 
-Target length: 2 minutes 8 seconds. The final upload must remain below three minutes and use a real human voice.
+Target length: 2 minutes 8 seconds. The final upload must remain below three minutes and include clear voiceover; the official FAQ permits AI-assisted narration.
 
 ## Screen sequence
 
