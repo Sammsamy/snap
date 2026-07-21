@@ -1627,7 +1627,17 @@ export function SnapExperience() {
           <span>{system?.system.resolutionAngstrom ? `${system.system.resolutionAngstrom.toFixed(2)} Å resolution` : "experimental structure"}</span>
         </div>
         <TermLedger score={visibleScore} />
-        <div className="build-credit">Built with GPT-5.6 in Codex · scoring runs in this browser</div>
+        <div className="build-credit">
+          <a
+            className="educator-guide-link"
+            href="https://github.com/Sammsamy/snap/blob/main/EDUCATOR_GUIDE.md"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Teach with SNAP · 10-minute guide ↗
+          </a>
+          <span>Built with GPT-5.6 in Codex · scoring runs in this browser</span>
+        </div>
       </footer>
 
       <LearningChallenge

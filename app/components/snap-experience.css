@@ -990,13 +990,30 @@
 .term strong { margin-top: 4px; font-family: "Courier New", monospace; font-size: 0.72rem; }
 
 .build-credit {
+  display: grid;
   justify-self: end;
+  gap: 5px;
   color: var(--bone-dim);
   font-family: "Courier New", monospace;
   font-size: 0.5rem;
   letter-spacing: 0.05em;
   text-align: right;
   text-transform: uppercase;
+}
+
+.educator-guide-link {
+  width: max-content;
+  justify-self: end;
+  color: var(--cyan);
+  font-size: 0.56rem;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.educator-guide-link:hover,
+.educator-guide-link:focus-visible {
+  color: var(--bone);
+  text-decoration: underline;
 }
 
 .proof-section {
@@ -1161,7 +1178,8 @@
   .score-rail > .model-boundary { grid-column: 1 / -1; }
   .instrument-footer { grid-template-columns: 1fr auto; padding-bottom: 74px; }
   .term-ledger { grid-row: 1; grid-column: 2; }
-  .build-credit { grid-column: 1 / -1; justify-self: start; }
+  .build-credit { grid-column: 1 / -1; justify-self: start; text-align: left; }
+  .educator-guide-link { justify-self: start; }
 }
 
 @media (max-width: 760px) {

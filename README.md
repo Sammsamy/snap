@@ -10,7 +10,7 @@ The score runs entirely in the browser. There is no API call, server calculation
 
 The intended audience is preclinical pharmacology, medicinal-chemistry, and molecular-biology learners and educators. An instructor can share one URL, ask for a prediction, and use the controlled reveal plus second-target counterexample as a discussion experiment without an install or account.
 
-**[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**
+**[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Run the 10-minute educator lesson](EDUCATOR_GUIDE.md)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**
 
 ![SNAP live 1STP challenge view with biotin, the local score, overlaps, and candidate contacts](docs/snap-instrument-3x2.jpg)
 
@@ -117,6 +117,7 @@ Important files:
 - `scripts/prepare_1stp.py` — reproducible public-data preparation.
 - `scripts/validate_1stp_assets.py` — hashes, coordinate checks, binary/JSON parity, and reference/decoy score checks.
 - `VIDEO_SCRIPT.md`, `SUBMISSION.md`, and `JUDGE_QA.md` — the recording script, Devpost copy, release checklist, and hostile-question guardrails.
+- `EDUCATOR_GUIDE.md` — a ready-to-run 10-minute lesson, answer key, extension, and honest future-pilot protocol.
 - `public/data/1stp-biotin.json` — centered prepared atoms, reference pose, provenance, scope, and limitations.
 - `public/data/1stp-autogrid.f32` — compact 8-channel Float32 grid used at runtime.
 - `public/data/1stp-autogrid-runtime.json` — compact runtime metadata for the binary grid, without duplicated map values.

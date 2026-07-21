@@ -84,6 +84,8 @@ SNAP is designed for pose-level intuition. It is not docking, affinity predictio
 
 SNAP is for preclinical pharmacology, medicinal-chemistry, and molecular-biology learners and educators who have seen lock-and-key figures but have never been able to test a pose themselves. There is no install, account, API key, or GPU cluster: an instructor can share one URL, ask for a prediction, and use the controlled reveal and second-target counterexample as a discussion experiment.
 
+A ready-to-run 10-minute lesson, answer key, extension, and transparent future-pilot protocol are published at https://github.com/Sammsamy/snap/blob/main/EDUCATOR_GUIDE.md. No learning-efficacy result is claimed.
+
 ## Inspiration
 
 One of pharmacology's central abstractions is also one of its least tactile: how a small molecule sits inside a protein pocket. Students are asked to reason about shape complementarity, steric overlap, electrostatics, and hydrogen-bond geometry from flat figures.
@@ -154,6 +156,7 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 11. Inspect the target-local counterexample panel and two-target observation record. The 3CE3 score improves while candidate markers fall; no target scores are combined or compared.
 12. Switch back to 1STP and confirm its completed page-memory record remains while the active task resets cleanly.
 13. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
+14. Open the educator guide linked in the instrument footer for the exact 10-minute classroom path, assessment key, and proposed evaluation protocol.
 
 ## Final submission checklist
 
