@@ -12,7 +12,7 @@ It is not a distance-to-pose heuristic. For each ligand atom, SNAP trilinearly s
 
 ## Why should I trust the reveal?
 
-The default reveal uses the PDB-derived prepared 1STP input and scores it independently at `−8.97`. Moving it 0.5 Å gives `−4.67`, while the 15 degree control gives `+4.37`. The separate 3CE3 field gives `−11.64` for its prepared input, `−0.09` and `+3.03` for translations, and `+145.80` for the 15 degree control. We do not claim either pose is a global minimum.
+The default reveal uses the PDB-derived prepared 1STP input and scores it independently at `−8.97`. Moving it 0.5 Å gives `−4.67`, while the 15 degree control gives `+4.37`. The separate 3CE3 field gives `−11.64` for its prepared input, `−0.09` and `+3.03` for translations, and `+145.80` for the 15 degree control. SNAP does not claim either pose is a global minimum.
 
 ## Is the atom contribution lens inventing an explanation after the fact?
 
@@ -28,7 +28,7 @@ No. It is an experimental inhibitor in the 3CE3 co-crystal. SNAP does not evalua
 
 ## Why only two prepared systems instead of arbitrary uploads?
 
-Each target needs offline preparation, atom typing, charge assignment, target-specific maps, provenance, and validation. We ship two independently audited benchmarks to prove the engine generalizes without pretending an arbitrary upload is scientifically ready.
+Each target needs offline preparation, atom typing, charge assignment, target-specific maps, provenance, and validation. SNAP ships two independently audited benchmarks to show that the engine transfers without pretending an arbitrary upload is scientifically ready.
 
 ## Can I compare −8.97 for 1STP with −11.64 for 3CE3?
 
@@ -40,7 +40,7 @@ The clash overlay is a bounded explanatory geometry heuristic, separate from the
 
 ## Why is the model single-chain?
 
-The official AutoDock-GPU benchmark maps use deposited chain A. A neighboring subunit contributes a contact in the biological tetramer, so SNAP discloses that omission in the interface and README. We did not silently add atoms that the score never sees.
+The official AutoDock-GPU benchmark maps use deposited chain A. A neighboring subunit contributes a contact in the biological tetramer, so SNAP discloses that omission in the interface and README. I did not silently add atoms that the score never sees.
 
 ## What did GPT-5.6 and Codex actually do?
 
@@ -48,7 +48,7 @@ They were development collaborators. Codex helped pin public source data, write 
 
 ## Why is there no GPT call in the live demo?
 
-The rules require GPT-5.6 and Codex in the build process, not a paid runtime dependency. Keeping the hot loop local lets the score update continuously, makes the demo reliable, and respects the team's zero-credit constraint.
+The rules require GPT-5.6 and Codex in the build process, not a paid runtime dependency. Keeping the hot loop local lets the score update continuously, makes the demo reliable, and respects my zero-credit constraint.
 
 ## Does switching targets require a server calculation?
 

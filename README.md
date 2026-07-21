@@ -148,7 +148,7 @@ npm run lint -- --max-warnings=0
 
 SNAP was built in Codex with GPT-5.6. The model was used during development, not as a paid runtime dependency.
 
-Codex helped the team:
+Codex helped me:
 
 - audit the Build Week rules and remove an unnecessary runtime API plan;
 - find and pin the official AutoDock-GPU 1STP and 3CE3 benchmarks instead of inventing molecular parameters;

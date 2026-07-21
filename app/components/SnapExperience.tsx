@@ -890,7 +890,7 @@ function readoutFor(
 ): string {
   if (!score) return "The numerical readout appears after the structure and grid load.";
   if (mode === "locked") {
-    return "This is the prepared co-crystal input pose. The target-specific field ranks it above our defined decoys.";
+    return "This is the prepared co-crystal input pose. The target-specific field ranks it above the defined decoys.";
   }
   if (score.outsideGridAtoms > 0) {
     return `Part of ${target.ligandShortName} has left the prepared grid. Move it back toward the pocket.`;

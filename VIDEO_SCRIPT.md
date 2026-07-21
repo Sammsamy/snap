@@ -53,7 +53,7 @@ Target length: 2 minutes 8 seconds. The final upload must remain below three min
 
 ### 1:44 to 1:56
 
-“In Codex, GPT-5.6 helped us pin and audit the benchmark assets, implement and test the trilinear scorer and atom-level conservation, and challenge our scientific claims.”
+“In Codex, GPT-5.6 helped me pin and audit the benchmark assets, implement and test the trilinear scorer and atom-level conservation, and challenge my scientific claims.”
 
 ### 1:56 to 2:08
 

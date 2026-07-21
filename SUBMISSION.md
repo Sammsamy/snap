@@ -104,9 +104,9 @@ There is no paid model call in the runtime. GPT-5.6 and Codex were the build too
 
 ## Challenges
 
-The hard part was not drawing molecules. It was making the visual response scientifically inspectable. We had to preserve AutoGrid file order, implement trilinear sampling at grid boundaries, keep out-of-grid states explicit, verify atom-level score deltas against the aggregate at displayed precision, separate scoring from explanatory contact geometry, and prevent false clash labels for donor hydrogen to acceptor contacts.
+The hard part was not drawing molecules. It was making the visual response scientifically inspectable. I had to preserve AutoGrid file order, implement trilinear sampling at grid boundaries, keep out-of-grid states explicit, verify atom-level score deltas against the aggregate at displayed precision, separate scoring from explanatory contact geometry, and prevent false clash labels for donor hydrogen to acceptor contacts.
 
-We also found boundaries during the audit that the interface now states directly. The 1STP benchmark score uses deposited chain A while a neighboring subunit contributes a tetramer contact. The 3CE3 ligand has five frozen torsions and three prepared polar hydrogens; its 41 inferred bonds are display-only. One explanatory clash marker remains at its prepared pose but is separate from the AutoGrid total.
+The audit also found boundaries that the interface now states directly. The 1STP benchmark score uses deposited chain A while a neighboring subunit contributes a tetramer contact. The 3CE3 ligand has five frozen torsions and three prepared polar hydrogens; its 41 inferred bonds are display-only. One explanatory clash marker remains at its prepared pose but is separate from the AutoGrid total.
 
 ## Accomplishments
 
@@ -119,7 +119,7 @@ We also found boundaries during the audit that the interface now states directly
 
 ## What we learned
 
-Scientific interfaces earn trust when users can falsify them. The most valuable design decision was to expose the score components and publish defined control poses. We also learned that a polished explanation layer must be kept separate from the exact scoring path so visual teaching cues do not quietly change the result.
+Scientific interfaces earn trust when users can falsify them. The most valuable design decision was to expose the score components and publish defined control poses. I also learned that a polished explanation layer must be kept separate from the exact scoring path so visual teaching cues do not quietly change the result.
 
 ## What is next
 
