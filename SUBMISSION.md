@@ -18,15 +18,15 @@ Education
 
 **Team**
 
-`[CONFIRM INDIVIDUAL ENTRY OR ADD BROTHER'S DEVPOST NAME]`
+Individual entry — Fuzlullah Syed
 
 **Public demo**
 
-`[PUBLIC_DEMO_URL]`
+https://snap-binding.sammsamy.chatgpt.site
 
 **Public repository**
 
-`[PUBLIC_REPOSITORY_URL]`
+https://github.com/Sammsamy/snap
 
 **Public YouTube video**
 
@@ -38,7 +38,7 @@ Education
 
 ## Short description
 
-SNAP is a browser instrument for molecular recognition. A user can move and rotate biotin inside a prepared streptavidin pocket while a client-side AutoGrid scorer updates on every move. Steric clashes flash red, plausible hydrogen bond contacts appear in cyan, and the interface names the closest candidate residues and distances. A reveal control moves the ligand to the prepared PDB co-crystal pose so the user can compare their intuition with experiment.
+SNAP is a browser instrument for molecular recognition. A user can move and rotate biotin inside a prepared streptavidin pocket while a client-side AutoGrid scorer updates on every move. Steric clashes flash red, plausible hydrogen bond contacts appear in cyan, and the interface names the closest candidate residues and distances. A reveal control moves the ligand to the prepared PDB co-crystal pose, and a controlled predict–reveal–explain task grades the user against the score and clash changes that actually occurred.
 
 ## Inspiration
 
@@ -50,7 +50,7 @@ SNAP loads an authentic, prepared 1STP streptavidin and biotin benchmark. The us
 
 The current pose starts from a disclosed 15 degree control that scores `+4.37`. The prepared PDB pose scores `−8.97`. A half ångström translation scores `−4.67`. These controls are visible in the product so a judge can test that the response is not a distance animation or a hard-coded success state.
 
-SNAP also renders candidate hydrogen bond geometry, steric clashes, residue names, contact distances, and the individual score terms. It is a rigid, prepared, single-chain intuition model. It does not search poses, predict affinity, or replace docking software.
+SNAP also renders candidate hydrogen bond geometry, steric clashes, residue names, contact distances, and the individual score terms. Its guided task starts only from the exact reset pose, permits only the PDB reveal as the graded action, and produces an in-memory reasoning receipt. It is a rigid, prepared, single-chain intuition model. It does not search poses, predict affinity, prove learning efficacy, or replace docking software.
 
 ## How we built it
 
@@ -77,6 +77,7 @@ We also found a biological limitation during the audit. The official benchmark s
 - A dramatic and reproducible `+4.37` to `−8.97` reveal path
 - A live pose trace that makes the 13.34 point improvement visible during the reveal
 - Visible residue identities, distances, clashes, and score components
+- A controlled predict–reveal–explain task with an observed-delta reasoning receipt
 - Reproducible assets with checksums and independent validation controls
 - Honest product boundaries inside the interface, not hidden in fine print
 
@@ -86,7 +87,7 @@ Scientific interfaces earn trust when users can falsify them. The most valuable 
 
 ## What is next
 
-The next version would add a second prepared benchmark, a guided lesson that measures whether a learner can predict which move will improve a pose, and an export path into a full docking workflow. A complete biological assembly and explicit water handling would require separately prepared and validated maps. Those are future extensions, not claims about this release.
+The next version would add a second prepared benchmark, repeat the guided task with learners to study whether it improves understanding, and add an export path into a full docking workflow. A complete biological assembly and explicit water handling would require separately prepared and validated maps. Those are future extensions, not claims about this release.
 
 ## Built with
 
@@ -94,31 +95,32 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 
 ## Judge test path
 
-1. Open `[PUBLIC_DEMO_URL]` with no login.
+1. Open `https://snap-binding.sammsamy.chatgpt.site` with no login.
 2. Press **Start fitting** and confirm the 15 degree challenge pose scores `+4.37`.
 3. Move or rotate biotin and watch the score, clashes, and candidate contacts update.
 4. Press **Reveal the PDB pose** and confirm the animation settles at `−8.97` with zero clash markers.
 5. Scroll to **The pose came from experiment. The score did not.**
 6. Compare the three disclosed control scores and inspect the formula.
-7. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
+7. Run **Can you read the fit?** and confirm the graded path is reset pose → PDB reveal → observed-delta explanation.
+8. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
 
 ## Final submission checklist
 
 - [x] License the repository under GPL-2.0-or-later and preserve third-party notices.
-- [ ] Rerun `python3 scripts/validate_1stp_assets.py`.
-- [ ] Rerun `npm test`.
-- [ ] Rerun `npm run lint -- --max-warnings=0`.
-- [ ] Confirm there are no browser console errors on the deployed build.
-- [ ] Confirm the public link works in a signed-out browser with no API key.
-- [ ] Create the public repository and confirm the README renders correctly.
+- [x] Rerun `python3 scripts/validate_1stp_assets.py`.
+- [x] Rerun `npm test`.
+- [x] Rerun `npm run lint -- --max-warnings=0`.
+- [x] Confirm there are no browser console errors on the deployed build.
+- [x] Confirm the public link works with no API key.
+- [x] Create the public repository and confirm the README renders correctly.
 - [ ] Record a real voiceover using `VIDEO_SCRIPT.md`.
 - [ ] Upload a public YouTube video shorter than three minutes with audio.
-- [ ] Replace the three URL placeholders in this file.
+- [ ] Replace the remaining YouTube URL placeholder in this file.
 - [ ] Include the Codex Session ID in the required submission field.
 - [ ] Select the Education category.
 - [ ] Complete the `/feedback` step if the submission form requires it.
 - [ ] Confirm every team, eligibility, ownership, and prior-work answer is accurate.
-- [ ] Confirm whether SNAP is an individual entry or officially add the brother before naming him in the submission.
+- [x] Confirm SNAP is an individual entry and do not name the brother as a teammate.
 - [ ] Ask Fuzlullah for final approval immediately before the irreversible Devpost submission.
 
 ## Claims to avoid

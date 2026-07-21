@@ -6,6 +6,8 @@ SNAP turns a static molecular-recognition diagram into a falsifiable browser ins
 
 The score runs entirely in the browser. There is no API call, server calculation, account, paid credit, or model in the interaction loop.
 
+**[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**
+
 ## What the demo proves
 
 SNAP is not a distance-to-answer trick. Each ligand atom samples the official target-specific AutoGrid maps with x-fast trilinear interpolation:
@@ -32,8 +34,11 @@ The prepared PDB pose beats these disclosed controls and sits in a favorable loc
 3. Drag the bright biotin molecule or use the arrow keys, then watch the score, live pose trace, candidate contact residues, distances, and clashes update.
 4. Press **Reveal the PDB pose**.
 5. See the molecule converge on the public co-crystal coordinates and the score settle at approximately −8.97.
+6. Run the controlled **Predict → Reveal → Explain** task and receive a local reasoning receipt based on the observed deltas.
 
 Keyboard controls are built in: arrows translate, Page Up/Page Down move in depth, Shift + arrows rotate, and Q/E roll. The stage respects reduced-motion preferences.
+
+The learning task captures only one deterministic comparison: the exact 15° reset pose to the locked PDB reference pose. It grades the prediction against the score and clash changes that actually occurred. The receipt stays in memory for that browser session and is explicitly not evidence of learning efficacy or clinical validation.
 
 ## Scientific boundary
 
@@ -139,4 +144,4 @@ SNAP is released as a whole under **GPL-2.0-or-later**. See [`LICENSE`](LICENSE)
 
 ## Current release state
 
-The implementation and local verification are complete. Public repository creation, deployment, video recording/upload, external review, and final Devpost submission are separate release gates and have not been represented as complete here.
+The implementation, local verification, public repository, and public deployment are complete. Video recording/upload, external review, and final Devpost submission remain separate release gates and have not been represented as complete here.

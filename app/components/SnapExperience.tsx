@@ -27,6 +27,10 @@ import {
   type ScoreBreakdown as StageScore,
 } from "./MolecularStage";
 import {
+  LearningChallenge,
+  type LearningChallengePoseState,
+} from "./LearningChallenge";
+import {
   scorePose,
   scorePoseWithAutoGrid,
   type AutoGridMapSet,
@@ -914,6 +918,16 @@ export function SnapExperience() {
   const challengeScore =
     system?.validation?.gridChecks?.rotated15DegreesScore ?? 4.370703;
   const statusReadout = readoutFor(visibleScore, mode);
+  const learningPoseState: LearningChallengePoseState =
+    mode === "revealing"
+      ? "revealing"
+      : mode === "locked"
+        ? "reference"
+        : mode === "explore"
+          ? hasMoved
+            ? "free"
+            : "challenge"
+          : "unavailable";
 
   return (
     <main className={`snap-shell mode-${mode}`}>
@@ -1141,6 +1155,17 @@ export function SnapExperience() {
           </p>
         </div>
       </section>
+
+      <LearningChallenge
+        currentScore={visibleScore?.total ?? null}
+        contacts={contactReadout}
+        candidateContactCount={visibleScore?.hydrogenBonds ?? null}
+        clashes={visibleScore?.clashes ?? null}
+        poseState={learningPoseState}
+        isReadoutValid={(visibleScore?.outsideGridAtoms ?? 1) === 0}
+        onResetChallengePose={resetAttempt}
+        onRevealReferencePose={revealExperimentalPose}
+      />
     </main>
   );
 }

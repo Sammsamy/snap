@@ -1,6 +1,6 @@
 # SNAP demo script
 
-Target length: 100 to 115 seconds. Keep the final upload below three minutes.
+Target length: 115 to 130 seconds. Keep the final upload below three minutes.
 
 Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera introduction is optional, but the working product should occupy most of the video.
 
@@ -47,7 +47,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 “The result is minus 8.97, with no clash markers. The live trace shows a 13.34 point improvement. The interface names the candidate contact residues and their distances, and exposes the atom type, electrostatic, and desolvation terms instead of hiding them behind one number.”
 
-### 1:05 to 1:22
+### 1:05 to 1:20
 
 **Screen:** Scroll to the proof section. Point to the three control scores and the equation.
 
@@ -55,7 +55,15 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 “Here is the falsifiable check. The prepared PDB pose scores minus 8.97. Moving it half an ångström weakens the score to minus 4.67. Rotating it fifteen degrees makes it unfavorable at plus 4.37. The same scorer produces all three results.”
 
-### 1:22 to 1:40
+### 1:20 to 1:40
+
+**Screen:** Scroll to **Can you read the fit?** Reset the controlled trial, choose **A lower score, with fewer clashes**, reveal the PDB pose, and show the explanation choices or final receipt.
+
+**Say:**
+
+“Then SNAP turns that contrast into a controlled learning task. I commit to a prediction, the app forces the exact reset-to-reference comparison, and it grades me against the score and clash changes that actually happened. The receipt stays local and does not pretend one task proves learning.”
+
+### 1:40 to 1:58
 
 **Screen:** Show the README section named “How GPT-5.6 and Codex were used,” then briefly show the scoring tests or terminal result.
 
@@ -63,7 +71,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 “We built SNAP with GPT-5.6 in Codex. It helped us prepare and audit the public molecular assets, implement the trilinear scoring path, test the interaction geometry, and attack our own claims. The runtime itself needs no paid model call. The scoring stays local and keeps working after the page loads.”
 
-### 1:40 to 1:52
+### 1:58 to 2:10
 
 **Screen:** Return to the glowing revealed complex and SNAP wordmark.
 
