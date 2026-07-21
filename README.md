@@ -2,7 +2,7 @@
 
 **Grab a real small molecule, fit it into a prepared protein pocket, and watch an authentic AutoGrid4 pose score respond in real time.**
 
-SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. The first system is the prepared biotin–streptavidin example from PDB 1STP and the official AutoDock-GPU benchmark. Drag biotin through the pocket, rotate it, inspect candidate hydrogen-bond contacts and steric overlaps, then reveal the prepared PDB co-crystal pose.
+SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. It ships two pinned AutoDock-GPU benchmarks: streptavidin–biotin from PDB 1STP and c-MET kinase with experimental inhibitor 1FN from PDB 3CE3. Move either rigid ligand, inspect candidate contacts and steric overlaps, then reveal its prepared co-crystal input pose. The same browser engine samples a separate target-specific field for each system.
 
 The score runs entirely in the browser. There is no API call, server calculation, account, paid credit, or model in the interaction loop.
 
@@ -16,16 +16,29 @@ SNAP is not a distance-to-answer trick. Each ligand atom samples the official ta
 atom-type affinity map + q × electrostatics map + |q| × desolvation map
 ```
 
-Lower scores are more favorable for this fixed prepared system.
+Lower scores are more favorable only within one fixed prepared system. Scores from different targets are on target-specific fields and must not be compared as affinity or binding strength.
+
+### 1STP · streptavidin / biotin
 
 | Audited pose | AutoGrid4 local pose score |
 | --- | ---: |
-| Prepared PDB co-crystal pose | **−8.974** |
+| Prepared co-crystal input pose | **−8.974** |
 | Translate +0.5 Å on x | −4.674 |
 | Rotate 15° around z | +4.371 |
 | Rotate 20° around z | +3.536 |
 
-The prepared PDB pose beats these disclosed controls and sits in a favorable local basin under this model. That does **not** prove a global optimum and does not predict biological affinity.
+The prepared input beats these disclosed controls and sits in a favorable local basin under this model. That does **not** prove a global optimum and does not predict biological affinity.
+
+### 3CE3 · c-MET / experimental inhibitor 1FN
+
+| Audited pose | AutoGrid4 local pose score |
+| --- | ---: |
+| Prepared co-crystal input pose | **−11.644** |
+| Translate −1 Å on x | −0.090 |
+| Translate +1 Å on z | +3.034 |
+| Rotate 15° around z | +145.802 |
+
+The 3CE3 controlled path changes from `+145.80 / 17 clashes / 4 candidate contacts` to `−11.64 / 1 clash / 3 candidate contacts`. Losing a candidate contact while the authentic grid score improves is useful evidence that contact count does not determine the score.
 
 ## Judge path
 
@@ -33,18 +46,19 @@ The prepared PDB pose beats these disclosed controls and sits in a favorable loc
 2. See the disclosed 15° challenge pose begin at approximately +4.37 with visible clash markers.
 3. Drag the bright biotin molecule or use the arrow keys, then watch the score, live pose trace, candidate contact residues, distances, and clashes update.
 4. Load the exact challenge pose, then run the controlled **Predict → Reveal → Explain** task before inspecting the answer elsewhere.
-5. See the molecule converge on the public co-crystal coordinates and the score settle at approximately −8.97.
+5. See the molecule converge on the prepared co-crystal input and the score settle at approximately −8.97.
 6. Receive a local reasoning receipt based on the observed score, clash, and candidate-contact deltas, then inspect the proof controls.
+7. Switch to **3CE3 · c-MET kinase · 1FN** and confirm that the same engine loads a separate field, starts at +145.80, and reveals −11.64.
 
 Keyboard controls are built in: arrows translate, Page Up/Page Down move in depth, Shift + arrows rotate, and Q/E roll. The stage respects reduced-motion preferences.
 
-The learning task captures only one deterministic comparison: the exact 15° reset pose to the locked PDB reference pose. It grades the prediction against the score and clash changes that actually occurred. The receipt stays in memory for that browser session and is explicitly not evidence of learning efficacy or clinical validation.
+The learning task captures one deterministic comparison for the selected target: the exact 15° reset pose to the locked prepared reference. It grades the prediction against the score and clash changes that actually occurred and labels the system in the receipt. The receipt stays in memory for that browser session and is explicitly not evidence of learning efficacy or clinical validation.
 
 ## Scientific boundary
 
 SNAP is a rigid-pose interaction instrument for intuition and education. It is not a docking search, affinity predictor, molecular-dynamics engine, or clinical tool.
 
-- Receptor and ligand are rigid.
+- Receptor and ligand are rigid in both systems.
 - There is no conformational search, minimization, or torsional optimization.
 - Protonation, AutoDock atom types, and Gasteiger partial charges are prepared inputs.
 - The benchmark preparation uses a deprotonated biotin carboxylate.
@@ -53,23 +67,27 @@ SNAP is a rigid-pose interaction instrument for intuition and education. It is n
 - The neighboring tetramer-contact Trp120 residue and nearby crystallographic waters are documented as unscored context, not included in the displayed or scored atom model.
 - Candidate H-bonds and clashes come from a separate bounded geometric explanation layer. They do not alter the authentic AutoGrid total.
 - If any ligand atom leaves the prepared grid, the UI shows an out-of-grid state rather than presenting the guard penalty as physical energy.
+- 1FN is an experimental inhibitor, not an approved medicine or treatment recommendation. Its five source torsions remain frozen.
+- Three 1FN polar hydrogens are prepared inputs rather than experimental heavy-atom coordinates. Its 41 inferred bonds are display-only and never enter scoring.
+- One bounded geometric clash marker remains at the prepared 3CE3 pose. That separate overlay is not part of the AutoGrid total and does not imply the experimental heavy-atom pose is wrong.
+- Target assets are static and load on selection. After a selected target loads, all pose scoring stays local; switching to an uncached target requires downloading its static JSON/grid assets.
 
-Biotin is a small molecule and canonical binding model, not a drug. SNAP is a foundation for teaching the same pose-level concepts used when reasoning about drug–target systems.
+Biotin is a small molecule and canonical binding model, not a drug. 1FN is an experimental inhibitor. SNAP teaches pose-level reasoning; it does not evaluate efficacy, safety, or clinical use.
 
 ## Architecture
 
 ```text
-Pinned public structure + official benchmark maps
+Pinned public structures + official benchmark maps
                     ↓
        reproducible offline preparation
                     ↓
- centered atoms + 8-channel Float32 grid
+ prepared atoms + target-specific 8-channel Float32 grids
                     ↓
       browser trilinear scorer (exact total)
                     ↓
  bounded pair geometry (visual explanation only)
                     ↓
- Three.js 6-DOF stage + score dial + PDB reveal
+ Three.js 6-DOF stage + score dial + prepared-pose reveal
 ```
 
 Important files:
@@ -84,6 +102,10 @@ Important files:
 - `public/data/1stp-autogrid.f32` — compact 8-channel Float32 grid used at runtime.
 - `public/data/1stp-autogrid-runtime.json` — compact runtime metadata for the binary grid, without duplicated map values.
 - `public/data/1stp-autogrid.json` — inspectable map values, per-channel hashes, and validation record.
+- `public/data/3ce3-system.json` — compact c-MET/1FN prepared system, frozen-pose boundary, and exact control panel.
+- `public/data/3ce3-autogrid.f32` and `3ce3-autogrid-runtime.json` — the second target's eight-channel runtime grid and manifest.
+- `tests/second-system.test.ts` — public-file hashes, channel layout, all-atoms-in-grid checks, and exact four-pose 3CE3 verification.
+- `research/second-system/` — pinned upstream inputs, preparation/build scripts, manifests, licenses, and independent release-candidate verifiers for 3CE3.
 
 ## Run locally
 
@@ -113,13 +135,13 @@ SNAP was built in Codex with GPT-5.6. The model was used during development, not
 Codex helped the team:
 
 - audit the Build Week rules and remove an unnecessary runtime API plan;
-- find and pin the official AutoDock-GPU 1STP benchmark instead of inventing molecular parameters;
+- find and pin the official AutoDock-GPU 1STP and 3CE3 benchmarks instead of inventing molecular parameters;
 - write the reproducible preparation and independent validator;
 - implement and test x-fast trilinear map scoring and quaternion pose transforms;
 - build the Three.js interaction stage, keyboard access, reduced-motion behavior, and responsive interface;
 - design and adversarially test the controlled predict–reveal–explain task;
 - run separate science, licensing, hostile-judge, copy, and live-browser audits;
-- catch the single-chain biological-assembly limitation, an interpolation-boundary mismatch, and false clash labels before release.
+- catch the single-chain biological-assembly limitation, an interpolation-boundary mismatch, false clash labels, and a misleading cross-target visual scale before release.
 
 Codex session ID for the Build Week collaboration:
 
@@ -143,6 +165,7 @@ SNAP is released as a whole under **GPL-2.0-or-later**. See [`LICENSE`](LICENSE)
 - Huey, R., et al. A semiempirical free energy force field with charge-based desolvation. *Journal of Computational Chemistry* (2007). [DOI](https://doi.org/10.1002/jcc.20634)
 - [AutoDock-GPU](https://github.com/ccsb-scripps/AutoDock-GPU)
 - [RCSB PDB 1STP](https://www.rcsb.org/structure/1STP)
+- [RCSB PDB 3CE3](https://www.rcsb.org/structure/3CE3)
 
 ## Current release state
 

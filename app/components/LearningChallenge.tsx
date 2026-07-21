@@ -71,6 +71,7 @@ export interface LearningChallengeReceipt {
 }
 
 export interface LearningChallengeProps {
+  contextLabel: string;
   currentScore: number | null;
   contacts: readonly LearningChallengeContact[];
   candidateContactCount?: number | null;
@@ -247,6 +248,7 @@ function formatDelta(value: number): string {
 }
 
 export function LearningChallenge({
+  contextLabel,
   currentScore,
   contacts,
   candidateContactCount,
@@ -362,6 +364,7 @@ export function LearningChallenge({
         <div>
           <span className="learning-challenge__index">02 / LEARN</span>
           <h2 id={`${instanceId}-title`}>Can you read the fit?</h2>
+          <span className="learning-challenge__context">{contextLabel}</span>
           <p>
             Predict one controlled comparison. Reveal the known pose. Explain only what the local evidence supports.
           </p>
@@ -385,7 +388,7 @@ export function LearningChallenge({
       <div className="learning-challenge__path-seal" aria-label="Controlled assessment path">
         <span>Exact 15° reset pose</span>
         <i aria-hidden="true">→</i>
-        <span>Reveal PDB pose</span>
+        <span>Reveal prepared pose</span>
         <i aria-hidden="true">→</i>
         <span>Locked reference readout</span>
       </div>
@@ -396,7 +399,7 @@ export function LearningChallenge({
             <div className="learning-challenge__prompt">
               <span>01 · Predict</span>
               <h3 ref={headingRef} tabIndex={-1}>
-                What will the PDB pose change?
+                What will the prepared reference change?
               </h3>
               <p>
                 The baseline is captured only when SNAP reports the exact reset challenge pose. Free-move data is excluded.
@@ -506,8 +509,8 @@ export function LearningChallenge({
                     {poseState === "revealing"
                       ? "Reveal in progress…"
                       : revealRequested
-                        ? "PDB pose revealed"
-                        : "Reveal PDB pose"}
+                        ? "Prepared pose revealed"
+                        : "Reveal prepared pose"}
                   </button>
                   <button
                     className="learning-challenge__primary"
@@ -523,10 +526,10 @@ export function LearningChallenge({
                   {poseState === "revealing"
                     ? "Reveal transition observed. Capture remains locked until the reference pose is complete."
                     : revealCompleted
-                      ? "Locked PDB reference confirmed. The controlled result is ready to capture."
+                      ? "Locked prepared reference confirmed. The controlled result is ready to capture."
                       : revealRequested
-                        ? "Waiting for SNAP to confirm the locked PDB reference pose."
-                        : "Run Reveal PDB pose to produce the only gradable result."}
+                        ? "Waiting for SNAP to confirm the locked prepared reference pose."
+                        : "Run Reveal prepared pose to produce the only gradable result."}
                 </p>
               </div>
             )}
@@ -638,7 +641,7 @@ export function LearningChallenge({
                   <span>Controlled-path check</span>
                   <p>
                     {receipt.controlledPathInvariantMet
-                      ? "Expected contrast reproduced: the PDB pose scored lower with fewer clashes."
+                      ? "Expected contrast reproduced: the prepared pose scored lower with fewer clashes."
                       : "The observed contrast differed from the expected control; the actual deltas above are retained."}
                   </p>
                 </div>
@@ -648,7 +651,7 @@ export function LearningChallenge({
               </div>
 
               <p className="learning-challenge__receipt-scope">
-                Exact reset baseline → Reveal PDB pose → locked reference. Generated locally and not stored. This receipt is not learning-efficacy, clinical-validation, or population evidence.
+                {contextLabel} · Exact reset baseline → Reveal prepared pose → locked reference. Generated locally and not stored. This receipt is not learning-efficacy, clinical-validation, or population evidence.
               </p>
             </div>
           </div>

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "system": "3CE3 c-MET kinase domain + experimental inhibitor 1FN",
+  "scorer": "current app/lib/scoring.ts AutoGrid trilinear scorer",
+  "formula": "atom-type affinity map + q*electrostatics map + abs(q)*desolvation map",
+  "grid": {
+    "spacingAngstrom": 0.375,
+    "dimensions": {
+      "x": 41,
+      "y": 55,
+      "z": 41
+    },
+    "center": {
+      "x": 20.402,
+      "y": 18.013,
+      "z": 56.855
+    },
+    "origin": {
+      "x": 12.902000000000001,
+      "y": 7.888000000000002,
+      "z": 49.355
+    },
+    "affinityChannels": [
+      "A",
+      "C",
+      "F",
+      "OA",
+      "N",
+      "HD"
+    ],
+    "totalChannels": 8
+  },
+  "ligand": {
+    "atoms": 37,
+    "atomTypes": [
+      "A",
+      "C",
+      "F",
+      "HD",
+      "N",
+      "OA"
+    ],
+    "pivot": {
+      "x": 21.106378378378377,
+      "y": 16.758756756756757,
+      "z": 57.48543243243242
+    }
+  },
+  "poses": {
+    "reference": {
+      "total": -11.6442810143,
+      "terms": {
+        "affinity": -15.3592972297,
+        "electrostatics": -0.18616824385,
+        "desolvation": 3.90118445924,
+        "outsideGridPenalty": 0
+      },
+      "scorerOutsideAtoms": 0,
+      "strictOutsideAtoms": 0
+    },
+    "translated_x_minus_1": {
+      "total": -0.089824719912,
+      "terms": {
+        "affinity": -3.3378647608,
+        "electrostatics": -0.446754743182,
+        "desolvation": 3.69479478407,
+        "outsideGridPenalty": 0
+      },
+      "scorerOutsideAtoms": 0,
+      "strictOutsideAtoms": 0
+    },
+    "translated_z_plus_1": {
+      "total": 3.03447033419,
+      "terms": {
+        "affinity": -0.778020231632,
+        "electrostatics": -0.222216488198,
+        "desolvation": 4.03470705402,
+        "outsideGridPenalty": 0
+      },
+      "scorerOutsideAtoms": 0,
+      "strictOutsideAtoms": 0
+    },
+    "rotated_z_15deg": {
+      "total": 145.802134522,
+      "terms": {
+        "affinity": 142.063181832,
+        "electrostatics": -0.376417087173,
+        "desolvation": 4.11536977728,
+        "outsideGridPenalty": 0
+      },
+      "scorerOutsideAtoms": 0,
+      "strictOutsideAtoms": 0
+    }
+  },
+  "referenceRanksFirstAmongFullyInGridPanel": true,
+  "compatibleWithCurrentScorer": true,
+  "caveats": [
+    "The reference is the upstream prepared co-crystal input pose, not a newly predicted pose.",
+    "The map total is a rigid-pose AutoGrid score, not measured affinity and not a docking result.",
+    "1FN is an experimental c-MET inhibitor; do not call it an approved medicine.",
+    "Exact upstream maps are target/grid/preparation-specific and total about 5.6 MB as text."
+  ]
+}

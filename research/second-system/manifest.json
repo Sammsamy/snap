@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "prepared_at": "2026-07-21T07:03:00.921835+00:00",
+  "system": {
+    "pdb_id": "3CE3",
+    "target": "human c-MET (hepatocyte growth factor receptor) kinase domain",
+    "ligand_comp_id": "1FN",
+    "ligand_description": "experimental pyrrolopyridinepyridone-based c-MET inhibitor; not represented as an approved drug",
+    "rcsb_entry": "https://www.rcsb.org/structure/3CE3",
+    "rcsb_chemcomp": "https://www.rcsb.org/ligand/1FN"
+  },
+  "upstream": {
+    "repository": "https://github.com/ccsb-scripps/AutoDock-GPU",
+    "commit": "89fd1c5e6b4639c22e9a2bea4cc805c42347fffb",
+    "commit_url": "https://github.com/ccsb-scripps/AutoDock-GPU/commit/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb"
+  },
+  "license": {
+    "conservative_treatment": "GPL-2.0",
+    "basis": "Files are copied verbatim from a GPL-2.0-licensed upstream repository; no separate per-file license notice was found. Preserve the included license.",
+    "license_copy": "UPSTREAM_LICENSE_GPL-2.0.txt"
+  },
+  "grid": {
+    "spacing_angstrom": 0.375,
+    "nelements": [
+      40,
+      54,
+      40
+    ],
+    "point_dimensions": [
+      41,
+      55,
+      41
+    ],
+    "center": [
+      20.402,
+      18.013,
+      56.855
+    ],
+    "affinity_channels": [
+      "A",
+      "C",
+      "F",
+      "OA",
+      "N",
+      "HD"
+    ],
+    "electrostatics_channel": "e",
+    "desolvation_channel": "d",
+    "total_channels": 8
+  },
+  "artifacts": [
+    {
+      "path": "UPSTREAM_LICENSE_GPL-2.0.txt",
+      "bytes": 18381,
+      "sha256": "4efdbc005c9b557547d62fa9b9885a6837aca508414bcc7b4b93842ce31b6f66",
+      "upstream_path": "LICENSE",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/LICENSE"
+    },
+    {
+      "path": "raw/3CE3.pdb",
+      "bytes": 230688,
+      "sha256": "90dfa6c0c8bb525da7778940bdae2b7fda7016f2932ba6487eb334512ec4ade8",
+      "upstream_path": "input/3ce3/3CE3.pdb",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/3CE3.pdb"
+    },
+    {
+      "path": "raw/3ce3.gpf",
+      "bytes": 1080,
+      "sha256": "b7b6065af41f00bde42004fd615a3a9a80602db20d7c290cca7766ab18c3df96",
+      "upstream_path": "input/3ce3/derived/3ce3.gpf",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3.gpf"
+    },
+    {
+      "path": "raw/3ce3.dpf",
+      "bytes": 2958,
+      "sha256": "237b13566477ea73be504e091c05a37cb1f62ecabe59904415a639a5269b9a5c",
+      "upstream_path": "input/3ce3/derived/3ce3.dpf",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3.dpf"
+    },
+    {
+      "path": "raw/3ce3_protein.maps.fld",
+      "bytes": 1778,
+      "sha256": "0babf07a002349393a71f2a42f1e8a961f61296287f349b9e445747d1e90e008",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.maps.fld",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.maps.fld"
+    },
+    {
+      "path": "raw/3ce3_ligand.pdbqt",
+      "bytes": 3542,
+      "sha256": "33c7b7d176b58b083359f3a9f2e842c1d632a492ee18db1e9f23128673eb118c",
+      "upstream_path": "input/3ce3/derived/3ce3_ligand.pdbqt",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_ligand.pdbqt"
+    },
+    {
+      "path": "raw/3ce3_protein.pdbqt",
+      "bytes": 226952,
+      "sha256": "a126b49ef3f125d89e2b14c871dee5734cd1f10290b5aab98ac98526f26f5bfc",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.pdbqt",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.pdbqt"
+    },
+    {
+      "path": "raw/3ce3_protein.A.map",
+      "bytes": 728498,
+      "sha256": "d1e573659584d834389788ca1dbfe4e5c9c74c27bdafaa9f8e13e5d6d55a703d",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.A.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.A.map"
+    },
+    {
+      "path": "raw/3ce3_protein.C.map",
+      "bytes": 728949,
+      "sha256": "3db9f5b3b20685c09f0db559c4c1daf450e7236b903ea272890fd0238447208e",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.C.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.C.map"
+    },
+    {
+      "path": "raw/3ce3_protein.F.map",
+      "bytes": 690006,
+      "sha256": "5bdd6dfd49ea1ef4db2a333d5d6efa519df68f8dc17690d0e5957fe809efcc2e",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.F.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.F.map"
+    },
+    {
+      "path": "raw/3ce3_protein.HD.map",
+      "bytes": 652406,
+      "sha256": "b3ea7c21b11e68cc18bcde8c39079962a992bf83ba91887a13eaeabdce3d0845",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.HD.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.HD.map"
+    },
+    {
+      "path": "raw/3ce3_protein.N.map",
+      "bytes": 712049,
+      "sha256": "1bf4514645d11ebe2a5af842409bdcbffd07953073392462405e84034be4e8d8",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.N.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.N.map"
+    },
+    {
+      "path": "raw/3ce3_protein.OA.map",
+      "bytes": 706101,
+      "sha256": "6f2eff6f2cc31171e6218c57ef3c7281d41ebfe1a60c6e3da062ce246b84adb0",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.OA.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.OA.map"
+    },
+    {
+      "path": "raw/3ce3_protein.e.map",
+      "bytes": 590513,
+      "sha256": "36219a3845466b6b25a1ce4ce8d11fde7c32b79060e84554e4e160b84f2f749c",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.e.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.e.map"
+    },
+    {
+      "path": "raw/3ce3_protein.d.map",
+      "bytes": 554892,
+      "sha256": "dea58af274a624332bb3f81b6b6a438e327f6cdcb1706e77485af64b83690753",
+      "upstream_path": "input/3ce3/derived/3ce3_protein.d.map",
+      "source_url": "https://raw.githubusercontent.com/ccsb-scripps/AutoDock-GPU/89fd1c5e6b4639c22e9a2bea4cc805c42347fffb/input/3ce3/derived/3ce3_protein.d.map"
+    }
+  ],
+  "runtime_payload_bytes": 5595686
+}

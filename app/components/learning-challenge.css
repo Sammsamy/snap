@@ -64,9 +64,20 @@
   line-height: 0.98;
 }
 
+.learning-challenge__context {
+  display: block;
+  margin-top: 14px;
+  color: var(--green, #b7f34a);
+  font-family: "Courier New", monospace;
+  font-size: 0.61rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .learning-challenge__header p {
   max-width: 57ch;
-  margin: 16px 0 0;
+  margin: 10px 0 0;
   color: var(--bone-dim, #a8a59c);
   font-size: 0.9rem;
   line-height: 1.55;

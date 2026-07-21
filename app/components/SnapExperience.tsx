@@ -85,7 +85,11 @@ interface PreparedSystem {
     referenceLigandCentroid: Vec3;
     coordinateUnits: string;
   };
-  receptor: { atoms: StructureAtom[]; bonds?: StructureBond[] };
+  receptor: {
+    atoms: StructureAtom[];
+    bonds?: StructureBond[];
+    chainId?: string;
+  };
   ligand: {
     atoms: StructureAtom[];
     bonds?: StructureBond[];
@@ -106,6 +110,8 @@ interface PreparedSystem {
     gridChecks?: {
       referenceCrystalPoseScore?: number;
       translated0_5AngstromScore?: number;
+      translatedXMinus1AngstromScore?: number;
+      translatedZPlus1AngstromScore?: number;
       rotated15DegreesScore?: number;
     };
   };
@@ -173,6 +179,103 @@ type ExperienceMode =
   | "revealing"
   | "locked"
   | "error";
+
+type TargetId = "1stp" | "3ce3";
+
+interface TargetDefinition {
+  id: TargetId;
+  entryId: string;
+  assetUrl: string;
+  selectorLabel: string;
+  selectorDetail: string;
+  disclosure: string;
+  ligandShortName: string;
+  learningContextLabel: string;
+  visualBadScoreKey:
+    | "rotated15DegreesScore"
+    | "translatedZPlus1AngstromScore";
+  loadingLabel: string;
+  introKicker: string;
+  introTitle: string;
+  introBody: string;
+  introBoundary: string;
+  stageAriaLabel: string;
+  modelBoundary: string;
+  geometryBoundary: string;
+  proofReference: string;
+  translation: {
+    label: string;
+    description: string;
+    scoreKey:
+      | "translated0_5AngstromScore"
+      | "translatedXMinus1AngstromScore";
+  };
+  rotationDescription: string;
+}
+
+const TARGETS: Record<TargetId, TargetDefinition> = {
+  "1stp": {
+    id: "1stp",
+    entryId: "1STP",
+    assetUrl: "/data/1stp-biotin.json",
+    selectorLabel: "Streptavidin · biotin",
+    selectorDetail: "canonical teaching pair",
+    disclosure: "Prepared chain A field · public heavy-atom co-crystal pose",
+    ligandShortName: "biotin",
+    learningContextLabel: "1STP · streptavidin / biotin",
+    visualBadScoreKey: "rotated15DegreesScore",
+    loadingLabel: "Loading PDB 1STP and its prepared AutoGrid field",
+    introKicker: "A real molecule. A prepared scoring field.",
+    introTitle: "Fit biotin into the pocket.",
+    introBody:
+      "Grab biotin and move it through the prepared 1STP pocket. The local score and contact markers update with every move.",
+    introBoundary: "PDB-derived prepared input · rigid molecules · simplified score",
+    stageAriaLabel: "Fit biotin into the prepared streptavidin chain A pocket",
+    modelBoundary:
+      "Rigid single-chain model. No flexibility or pose search. Built for intuition, not drug discovery predictions.",
+    geometryBoundary:
+      "Contact and clash overlays are explanatory geometry checks; they do not enter the AutoGrid total.",
+    proofReference: "PDB-derived prepared input from 1STP",
+    translation: {
+      label: "Move 0.5 Å",
+      description: "A half ångström displacement weakens the local score",
+      scoreKey: "translated0_5AngstromScore",
+    },
+    rotationDescription: "A small rotation creates an unfavorable contact field",
+  },
+  "3ce3": {
+    id: "3ce3",
+    entryId: "3CE3",
+    assetUrl: "/data/3ce3-system.json",
+    selectorLabel: "c-MET kinase · 1FN",
+    selectorDetail: "same engine · separate maps",
+    disclosure: "Experimental 1FN · five frozen torsions · not an approved medicine",
+    ligandShortName: "1FN",
+    learningContextLabel: "3CE3 · c-MET / experimental inhibitor 1FN",
+    visualBadScoreKey: "translatedZPlus1AngstromScore",
+    loadingLabel: "Loading PDB 3CE3 and its target-specific AutoGrid field",
+    introKicker: "A second target. The same live scoring path.",
+    introTitle: "Fit 1FN into the c-MET pocket.",
+    introBody:
+      "Move the experimental inhibitor through the prepared 3CE3 kinase pocket. The same browser engine now samples a different target-specific field.",
+    introBoundary:
+      "Experimental ligand · five frozen torsions · not an approved medicine",
+    stageAriaLabel: "Fit experimental inhibitor 1FN into the prepared c-MET kinase pocket",
+    modelBoundary:
+      "Rigid prepared kinase model with no pose search or affinity prediction. Five ligand torsions remain frozen. 1FN is experimental, not an approved medicine.",
+    geometryBoundary:
+      "One clash marker remains at the prepared 3CE3 input. This separate geometry heuristic does not enter the AutoGrid total or invalidate the experiment; its 41 inferred bonds are display-only.",
+    proofReference: "PDB-derived prepared input from 3CE3",
+    translation: {
+      label: "Move −1 Å on x",
+      description: "A one ångström displacement weakens the target-specific score",
+      scoreKey: "translatedXMinus1AngstromScore",
+    },
+    rotationDescription: "A 15° rotation creates a strong repulsive field",
+  },
+};
+
+const TARGET_ORDER: TargetId[] = ["1stp", "3ce3"];
 
 const IDENTITY_ROTATION: QuaternionTuple = [0, 0, 0, 1];
 const START_ROTATION: QuaternionTuple = [
@@ -252,6 +355,39 @@ function makeScoringAtom(atom: StructureAtom): ScoringAtom {
   };
 }
 
+function assertPreparedSystemContract(
+  system: PreparedSystem,
+  target: TargetDefinition,
+): void {
+  if (system.system.entryId.trim().toUpperCase() !== target.entryId) {
+    throw new Error(
+      `Loaded ${system.system.entryId || "unknown entry"} while ${target.entryId} was selected.`,
+    );
+  }
+
+  const reference = system.ligand.referencePose?.positions;
+  if (!reference || reference.length !== system.ligand.atoms.length) {
+    throw new Error("The prepared ligand reference pose does not match its atom list.");
+  }
+
+  reference.forEach((position, index) => {
+    if (position.length !== 3 || !position.every(Number.isFinite)) {
+      throw new Error(`Reference ligand atom ${index} has an invalid coordinate.`);
+    }
+    const atom = atomPosition(system.ligand.atoms[index]);
+    const delta = Math.hypot(
+      atom[0] - position[0],
+      atom[1] - position[1],
+      atom[2] - position[2],
+    );
+    if (delta > 1e-5) {
+      throw new Error(
+        `Prepared ligand atom ${index} differs from the reference pose by ${delta.toFixed(5)} Å.`,
+      );
+    }
+  });
+}
+
 function buildModelBundle(system: PreparedSystem): ModelBundle {
   const ligandCentroid = system.frame.referenceLigandCentroid;
   const pocketCutoff =
@@ -260,7 +396,12 @@ function buildModelBundle(system: PreparedSystem): ModelBundle {
     5;
   const pocketCutoffSquared = pocketCutoff * pocketCutoff;
   const ligandReference = system.ligand.atoms.map(atomPosition);
-  const receptor = system.receptor.atoms.map(makeScoringAtom);
+  const receptor = system.receptor.atoms.map((atom) =>
+    makeScoringAtom({
+      ...atom,
+      chainId: atom.chainId ?? system.receptor.chainId,
+    }),
+  );
   const ligand = system.ligand.atoms.map(makeScoringAtom);
 
   const pocketAtomIds = new Set(
@@ -363,7 +504,10 @@ function readFloatChannel(
   );
 }
 
-async function hydrateAutoGrid(document: AutoGridDocument): Promise<AutoGridMapSet> {
+async function hydrateAutoGrid(
+  document: AutoGridDocument,
+  signal?: AbortSignal,
+): Promise<AutoGridMapSet> {
   const prepared = document.autoGrid;
   const count =
     prepared.dimensions.x * prepared.dimensions.y * prepared.dimensions.z;
@@ -371,7 +515,7 @@ async function hydrateAutoGrid(document: AutoGridDocument): Promise<AutoGridMapS
 
   if (prepared.binary) {
     try {
-      const response = await fetch(prepared.binary.url);
+      const response = await fetch(prepared.binary.url, { signal });
       if (!response.ok) {
         throw new Error(`AutoGrid binary returned ${response.status}.`);
       }
@@ -522,13 +666,23 @@ function ScoreTrace({
   baseline: number;
   outsideGrid: boolean;
 }) {
-  const chartMinimum = -10;
-  const chartMaximum = 8;
+  const chartValues = [baseline, ...values].filter(Number.isFinite);
+  const observedMinimum = Math.min(...chartValues);
+  const observedMaximum = Math.max(...chartValues);
+  const observedSpan = observedMaximum - observedMinimum;
+  const chartPadding =
+    observedSpan > 0
+      ? Math.max(0.5, observedSpan * 0.1)
+      : Math.max(1, Math.abs(observedMaximum) * 0.05);
+  const chartMinimum = observedMinimum - chartPadding;
+  const chartMaximum = observedMaximum + chartPadding;
+  const chartSpan = Math.max(0.1, chartMaximum - chartMinimum);
+  const zeroLineY = 34 - ((0 - chartMinimum) / chartSpan) * 32;
   const points = values
     .map((value, index) => {
       const x = values.length <= 1 ? 0 : (index / (values.length - 1)) * 100;
       const clamped = Math.min(chartMaximum, Math.max(chartMinimum, value));
-      const y = 34 - ((clamped - chartMinimum) / (chartMaximum - chartMinimum)) * 32;
+      const y = 34 - ((clamped - chartMinimum) / chartSpan) * 32;
       return `${x.toFixed(2)},${y.toFixed(2)}`;
     })
     .join(" ");
@@ -542,6 +696,10 @@ function ScoreTrace({
       : improvement >= 0
         ? `${improvement.toFixed(2)} better`
         : `${Math.abs(improvement).toFixed(2)} worse`;
+  const spokenComparison =
+    comparison === "baseline"
+      ? "at the 15 degree challenge baseline"
+      : `${comparison} than the 15 degree challenge pose`;
 
   return (
     <div
@@ -551,7 +709,7 @@ function ScoreTrace({
           ? "Pose trace paused because part of the molecule is outside the prepared grid."
           : current === undefined
           ? "No recent pose scores"
-          : `Recent local pose scores. Current ${current.toFixed(2)}, ${comparison} than the 15 degree challenge pose.`
+          : `Recent local pose scores. Current ${current.toFixed(2)}, ${spokenComparison}.`
       }
     >
       <div>
@@ -559,14 +717,16 @@ function ScoreTrace({
         <strong>{comparison}</strong>
       </div>
       <svg viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="0" y1="16.22" x2="100" y2="16.22" />
+        {chartMinimum <= 0 && chartMaximum >= 0 ? (
+          <line x1="0" y1={zeroLineY} x2="100" y2={zeroLineY} />
+        ) : null}
         {points && <polyline points={points} />}
       </svg>
     </div>
   );
 }
 
-function LoadingSpecimen() {
+function LoadingSpecimen({ label }: { label: string }) {
   return (
     <div className="loading-specimen" role="status">
       <div className="loading-orbit">
@@ -574,32 +734,37 @@ function LoadingSpecimen() {
         <i />
         <i />
       </div>
-      <span>Loading PDB 1STP and its prepared AutoGrid field</span>
+      <span>{label}</span>
     </div>
   );
 }
 
-function readoutFor(score: VisibleScore | null, mode: ExperienceMode): string {
+function readoutFor(
+  score: VisibleScore | null,
+  mode: ExperienceMode,
+  target: TargetDefinition,
+): string {
   if (!score) return "The numerical readout appears after the structure and grid load.";
   if (mode === "locked") {
-    return "This is the prepared PDB co-crystal pose. The scoring field ranks it above our defined decoys.";
+    return "This is the prepared co-crystal input pose. The target-specific field ranks it above our defined decoys.";
   }
   if (score.outsideGridAtoms > 0) {
-    return "Part of biotin has left the prepared grid. Move it back toward the pocket.";
+    return `Part of ${target.ligandShortName} has left the prepared grid. Move it back toward the pocket.`;
   }
   if (score.clashes > 0) {
-    return "Red markers show atoms pushed too close together. Move or rotate biotin to clear the overlap.";
+    return `Red markers show atoms pushed too close together. Move or rotate ${target.ligandShortName} to clear the overlap.`;
   }
   if (score.normalized > 0.82) {
-    return "The local field now favors this pose. Reveal the PDB coordinates to compare it with experiment.";
+    return "The local field now favors this pose. Reveal the prepared reference to compare it with the co-crystal input.";
   }
   if (score.hydrogenBonds > 0) {
     return "Cyan lines mark plausible hydrogen bond geometry. Keep them while lowering the local score.";
   }
-  return "Move biotin through the pocket. Lower the score and watch for contact geometry without forcing atoms together.";
+  return `Move ${target.ligandShortName} through the pocket. Lower the score and watch for contact geometry without forcing atoms together.`;
 }
 
 export function SnapExperience() {
+  const [selectedTarget, setSelectedTarget] = useState<TargetId>("1stp");
   const [mode, setMode] = useState<ExperienceMode>("loading");
   const [system, setSystem] = useState<PreparedSystem | null>(null);
   const [grid, setGrid] = useState<AutoGridMapSet | null>(null);
@@ -614,27 +779,56 @@ export function SnapExperience() {
   const revealFrame = useRef<number | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
   const lockArmed = useRef(true);
+  const activeTarget = TARGETS[selectedTarget];
+
+  const handleTargetSelect = useCallback(
+    (targetId: TargetId) => {
+      if (targetId === selectedTarget) return;
+      if (revealFrame.current !== null) {
+        cancelAnimationFrame(revealFrame.current);
+        revealFrame.current = null;
+      }
+      lockArmed.current = true;
+      setMode("loading");
+      setSystem(null);
+      setGrid(null);
+      setError(null);
+      setHasMoved(false);
+      setScoreTrace([]);
+      setSelectedTarget(targetId);
+    },
+    [selectedTarget],
+  );
 
   useEffect(() => {
     let cancelled = false;
+    const controller = new AbortController();
 
     async function loadSystem() {
       try {
-        const response = await fetch("/data/1stp-biotin.json");
+        const response = await fetch(activeTarget.assetUrl, {
+          signal: controller.signal,
+        });
         if (!response.ok) throw new Error(`Structure asset returned ${response.status}.`);
         const prepared = (await response.json()) as PreparedSystem;
         if (!prepared.receptor?.atoms?.length || !prepared.ligand?.atoms?.length) {
           throw new Error("The prepared structure is missing receptor or ligand atoms.");
         }
+        assertPreparedSystemContract(prepared, activeTarget);
         if (!prepared.scoring?.autoGridManifest) {
           throw new Error("The prepared structure does not name its AutoGrid manifest.");
         }
-        const gridResponse = await fetch(prepared.scoring.autoGridManifest);
+        const gridResponse = await fetch(prepared.scoring.autoGridManifest, {
+          signal: controller.signal,
+        });
         if (!gridResponse.ok) {
           throw new Error(`AutoGrid manifest returned ${gridResponse.status}.`);
         }
         const gridDocument = (await gridResponse.json()) as AutoGridDocument;
-        const preparedGrid = await hydrateAutoGrid(gridDocument);
+        const preparedGrid = await hydrateAutoGrid(
+          gridDocument,
+          controller.signal,
+        );
         const bundle = buildModelBundle(prepared);
         scorePoseWithAutoGrid(
           preparedGrid,
@@ -646,9 +840,11 @@ export function SnapExperience() {
           setSystem(prepared);
           setGrid(preparedGrid);
           setPose(bundle.initialPose);
+          setError(null);
           setMode("intro");
         }
       } catch (reason) {
+        if (controller.signal.aborted) return;
         if (!cancelled) {
           setError(
             reason instanceof Error
@@ -663,9 +859,10 @@ export function SnapExperience() {
     loadSystem();
     return () => {
       cancelled = true;
+      controller.abort();
       if (revealFrame.current !== null) cancelAnimationFrame(revealFrame.current);
     };
-  }, []);
+  }, [activeTarget]);
 
   const bundle = useMemo(
     () => (system ? buildModelBundle(system) : null),
@@ -687,8 +884,11 @@ export function SnapExperience() {
       bundle.ligand,
       toLigandPose(bundle.initialPose, bundle.ligandCentroid),
     );
-    const span = Math.max(0.1, initial.total - crystal.total);
-    const normalized = clamp01((initial.total - autoGrid.total) / span);
+    const visualBadAnchor =
+      system?.validation?.gridChecks?.[activeTarget.visualBadScoreKey] ??
+      initial.total;
+    const span = Math.max(0.1, visualBadAnchor - crystal.total);
+    const normalized = clamp01((visualBadAnchor - autoGrid.total) / span);
 
     const visible: VisibleScore = {
       total: autoGrid.total,
@@ -699,8 +899,8 @@ export function SnapExperience() {
       evaluatedPairs: geometry.evaluatedPairs,
       outsideGridAtoms: autoGrid.outsideGridAtoms,
     };
-    return { autoGrid, geometry, visible };
-  }, [bundle, grid, pose]);
+    return { autoGrid, geometry, visible, initialScore: initial.total };
+  }, [activeTarget.visualBadScoreKey, bundle, grid, pose, system]);
 
   const interactions = useMemo<MolecularInteraction[]>(() => {
     if (!bundle || !scoring) return [];
@@ -911,13 +1111,17 @@ export function SnapExperience() {
 
   const systemLabel = system
     ? `RCSB PDB ${system.system.entryId.toUpperCase()}`
-    : "RCSB PDB 1STP";
+    : `RCSB PDB ${activeTarget.entryId}`;
   const atomCount =
     (system?.receptor.atoms.length ?? 0) + (system?.ligand.atoms.length ?? 0);
   const visibleScore = scoring?.visible ?? null;
   const challengeScore =
-    system?.validation?.gridChecks?.rotated15DegreesScore ?? 4.370703;
-  const statusReadout = readoutFor(visibleScore, mode);
+    system?.validation?.gridChecks?.rotated15DegreesScore ??
+    scoring?.initialScore ??
+    0;
+  const translationScore =
+    system?.validation?.gridChecks?.[activeTarget.translation.scoreKey];
+  const statusReadout = readoutFor(visibleScore, mode, activeTarget);
   const learningPoseState: LearningChallengePoseState =
     mode === "revealing"
       ? "revealing"
@@ -942,7 +1146,7 @@ export function SnapExperience() {
             <strong>{systemLabel}</strong>
             <span>
               {system
-                ? `${system.system.name} / ${system.system.ligand.name}`
+                ? system.system.name
                 : "public experimental coordinates"}
             </span>
           </div>
@@ -962,6 +1166,41 @@ export function SnapExperience() {
         </div>
       </header>
 
+      <nav className="benchmark-bar" aria-label="Prepared molecular benchmarks">
+        <div className="benchmark-label">
+          <span>Prepared benchmark</span>
+          <strong>2 systems · 2 target-specific fields</strong>
+        </div>
+        <div className="benchmark-tabs" role="group" aria-label="Choose a prepared target">
+          {TARGET_ORDER.map((targetId) => {
+            const target = TARGETS[targetId];
+            const selected = targetId === selectedTarget;
+            return (
+              <button
+                className={selected ? "is-active" : undefined}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => handleTargetSelect(targetId)}
+                key={targetId}
+              >
+                <span>{target.entryId}</span>
+                <span>
+                  <strong>{target.selectorLabel}</strong>
+                  <small>{target.selectorDetail}</small>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <p className="benchmark-disclosure" aria-live="polite">
+          <strong>{activeTarget.disclosure}</strong>
+          <span>
+            Static assets load on selection; scoring then stays local. Compare
+            poses within one target, never binding strength between targets.
+          </span>
+        </p>
+      </nav>
+
       <section className="instrument" id="instrument">
         <div className="instrument-stage">
           <div className="stage-vignette" />
@@ -969,7 +1208,7 @@ export function SnapExperience() {
           <div className="stage-coordinate stage-coordinate-y">Y</div>
           <div className="stage-coordinate stage-coordinate-z">Z</div>
 
-          {mode === "loading" && <LoadingSpecimen />}
+          {mode === "loading" && <LoadingSpecimen label={activeTarget.loadingLabel} />}
 
           {mode === "error" && (
             <div className="error-state" role="alert">
@@ -983,6 +1222,7 @@ export function SnapExperience() {
           {bundle && grid && (
             <div className="molecular-mount">
               <MolecularStage
+                key={system?.system.id}
                 system={bundle.stageSystem}
                 pose={pose}
                 score={stageScore}
@@ -991,7 +1231,7 @@ export function SnapExperience() {
                 crystalPose={bundle.crystalPose}
                 showCrystalGhost={mode === "revealing"}
                 disabled={mode === "intro" || mode === "revealing" || mode === "locked"}
-                ariaLabel="Fit biotin into the prepared streptavidin chain A pocket"
+                ariaLabel={activeTarget.stageAriaLabel}
               />
             </div>
           )}
@@ -1004,17 +1244,14 @@ export function SnapExperience() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -18 }}
               >
-                <span className="intro-kicker">A real molecule. A prepared scoring field.</span>
-                <h1>Fit biotin into the pocket.</h1>
-                <p>
-                  Grab biotin and move it through the prepared 1STP pocket. The
-                  local score and contact markers update with every move.
-                </p>
+                <span className="intro-kicker">{activeTarget.introKicker}</span>
+                <h1>{activeTarget.introTitle}</h1>
+                <p>{activeTarget.introBody}</p>
                 <button className="hero-action" type="button" onClick={startFitting}>
                   <Grab size={18} />
                   Start fitting
                 </button>
-                <small>Real PDB coordinates · rigid molecules · simplified score</small>
+                <small>{activeTarget.introBoundary}</small>
               </motion.div>
             )}
           </AnimatePresence>
@@ -1025,7 +1262,7 @@ export function SnapExperience() {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
             >
-              <Check size={15} /> Prepared PDB co-crystal pose
+              <Check size={15} /> Prepared co-crystal input pose
             </motion.div>
           )}
 
@@ -1075,7 +1312,7 @@ export function SnapExperience() {
             onClick={revealExperimentalPose}
           >
             {mode === "locked" ? <RotateCcw size={17} /> : <Eye size={17} />}
-            {mode === "locked" ? "Try another pose" : mode === "revealing" ? "Revealing…" : "Reveal the PDB pose"}
+            {mode === "locked" ? "Try another pose" : mode === "revealing" ? "Revealing…" : "Reveal prepared pose"}
           </button>
         </aside>
 
@@ -1100,8 +1337,7 @@ export function SnapExperience() {
           <div className="model-boundary">
             <Sparkles size={14} />
             <p>
-              Rigid single-chain model. No flexibility or pose search. Built
-              for intuition, not drug discovery predictions.
+              {activeTarget.modelBoundary}
             </p>
           </div>
         </aside>
@@ -1118,6 +1354,8 @@ export function SnapExperience() {
       </footer>
 
       <LearningChallenge
+        key={selectedTarget}
+        contextLabel={activeTarget.learningContextLabel}
         currentScore={visibleScore?.total ?? null}
         contacts={contactReadout}
         candidateContactCount={visibleScore?.hydrogenBonds ?? null}
@@ -1131,28 +1369,28 @@ export function SnapExperience() {
       <section className="proof-section" aria-labelledby="proof-title">
         <div className="proof-heading">
           <span className="proof-index">03 / PROOF</span>
-          <h2 id="proof-title">The pose came from experiment. The score did not.</h2>
+          <h2 id="proof-title">The heavy-atom pose came from experiment. The score did not.</h2>
           <p>
-            The reference coordinates are public PDB data. SNAP independently
-            resamples the prepared interaction field, so a judge can move the
-            molecule, break the fit, and watch the result change.
+            Heavy-atom reference coordinates come from public PDB data; modeled
+            polar hydrogens, atom types, and charges come from pinned prepared
+            inputs. SNAP independently resamples each target-specific field.
           </p>
         </div>
         <div className="control-panel" aria-label="Defined pose controls">
           <article className="control-card control-card-reference">
-            <span>Prepared PDB pose</span>
+            <span>Prepared co-crystal input</span>
             <strong>{formatTerm(system?.validation?.gridChecks?.referenceCrystalPoseScore)}</strong>
-            <p>Reference coordinates from 1STP</p>
+            <p>{activeTarget.proofReference}</p>
           </article>
           <article className="control-card">
-            <span>Move 0.5 Å</span>
-            <strong>{formatTerm(system?.validation?.gridChecks?.translated0_5AngstromScore)}</strong>
-            <p>A half ångström displacement weakens the local score</p>
+            <span>{activeTarget.translation.label}</span>
+            <strong>{formatTerm(translationScore)}</strong>
+            <p>{activeTarget.translation.description}</p>
           </article>
           <article className="control-card">
             <span>Rotate 15°</span>
             <strong>{formatTerm(system?.validation?.gridChecks?.rotated15DegreesScore)}</strong>
-            <p>A small rotation creates an unfavorable contact field</p>
+            <p>{activeTarget.rotationDescription}</p>
           </article>
         </div>
         <div className="engine-proof">
@@ -1161,8 +1399,10 @@ export function SnapExperience() {
             <code>atom-type map + q × electrostatics + |q| × desolvation</code>
           </div>
           <p>
-            This is one rigid, prepared, single-chain model. It teaches why a
-            pose changes. It does not search for drugs or predict affinity.
+            {activeTarget.geometryBoundary} Each target is a rigid prepared
+            pose and its own interaction field. SNAP does not search for drugs
+            or predict affinity. Scores are target-specific: never compare the
+            1STP and 3CE3 numbers as binding strength.
           </p>
         </div>
       </section>

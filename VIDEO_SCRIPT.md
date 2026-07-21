@@ -1,6 +1,6 @@
 # SNAP demo script
 
-Target length: 115 to 130 seconds. Keep the final upload below three minutes.
+Target length: 140 to 155 seconds. Keep the final upload below three minutes.
 
 Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera introduction is optional, but the working product should occupy most of the video.
 
@@ -41,11 +41,11 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 ### 0:42 to 1:10
 
-**Screen:** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal the PDB pose**. Hold on the revealed pose and press **Capture controlled result**.
+**Screen:** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal prepared pose**. Hold on the revealed pose and press **Capture controlled result**.
 
 **Say:**
 
-“Before seeing the answer, I predict that the deposited pose will lower the score and remove clashes. SNAP now forces the controlled reset-to-reference comparison. The result is minus 8.97 with zero clashes, a 13.34 point improvement. The observation is graded against what actually happened, not a hard-coded success screen.”
+“Before seeing the answer, I predict that the prepared co-crystal input will lower the score and remove clashes. SNAP now forces the controlled reset-to-reference comparison. The result is minus 8.97 with zero clashes, a 13.34 point improvement. The observation is graded against what actually happened, not a hard-coded success screen.”
 
 ### 1:10 to 1:25
 
@@ -61,9 +61,17 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 **Say:**
 
-“Here is the falsifiable check. The prepared PDB pose scores minus 8.97. Moving it half an ångström weakens the score to minus 4.67. Rotating it fifteen degrees makes it unfavorable at plus 4.37. The same scorer produces all three results, and the terms are exposed instead of hidden behind one number.”
+“Here is the falsifiable check. The prepared 1STP input scores minus 8.97. Moving it half an ångström weakens the score to minus 4.67. Rotating it fifteen degrees makes it unfavorable at plus 4.37. The same scorer produces all three results, and the terms are exposed instead of hidden behind one number.”
 
-### 1:43 to 2:01
+### 1:43 to 2:03
+
+**Screen:** Cut back to the target selector, choose **3CE3 · c-MET kinase · 1FN**, press **Start fitting**, show `+145.80 / 17 clashes / 4 candidates`, then press **Reveal prepared pose** and hold on `−11.64 / 1 clash / 3 candidates`.
+
+**Say:**
+
+“This is not a one-molecule trick. Switching to PDB 3CE3 loads a separate c-MET field through the same scorer. Experimental inhibitor 1FN moves from plus 145.80 to minus 11.64 at its prepared pose. Its five torsions are frozen, and these target-specific scores never compare affinity.”
+
+### 2:03 to 2:21
 
 **Screen:** Show the README section named “How GPT-5.6 and Codex were used,” then briefly show the scoring tests or terminal result.
 
@@ -71,13 +79,13 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 “We built SNAP with GPT-5.6 in Codex. It helped us prepare and audit the public molecular assets, implement the trilinear scoring path, test the interaction geometry, and attack our own claims. The runtime itself needs no paid model call. The scoring stays local and keeps working after the page loads.”
 
-### 2:01 to 2:13
+### 2:21 to 2:36
 
 **Screen:** Return to the glowing revealed complex and SNAP wordmark.
 
 **Say:**
 
-“SNAP is one rigid, prepared, single-chain teaching model. It does not predict affinity and it is not docking software. It is a free browser instrument for building molecular intuition by moving, breaking, and comparing a pose with experiment.”
+“SNAP is two rigid prepared teaching systems behind one transparent engine. It does not predict affinity and it is not docking software. It is a free browser instrument for building molecular intuition by moving, breaking, predicting, and comparing a pose with experiment.”
 
 End on the SNAP wordmark for two seconds.
 
@@ -86,7 +94,9 @@ End on the SNAP wordmark for two seconds.
 - Say “small molecule,” not “drug.” Biotin is the benchmark ligand.
 - Say “candidate contact” or “plausible hydrogen bond geometry,” not “confirmed bond.”
 - Say “local prepared AutoGrid score,” not “binding affinity.”
-- Do not claim the PDB pose is the global optimum.
+- Do not claim either prepared pose is the global optimum.
 - Do not claim this is a complete tetramer model. The displayed and scored model is chain A.
+- Call 1FN an experimental inhibitor, never an approved medicine.
+- Say the two scores are target-specific and cannot be compared as affinity.
 - Keep the score dial visible during the reveal.
 - If a drag goes badly, restart the take. The clean proof is more important than improvisation.

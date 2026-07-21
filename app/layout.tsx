@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://snap-binding.sammsamy.chatgpt.site"),
   title: "SNAP — The small molecule binding instrument",
   description:
-    "Hold a real molecule, explore a real protein pocket, and watch a transparent local interaction score respond to every move.",
+    "Move real ligands through two prepared protein pockets and watch a transparent local AutoGrid score respond to every move.",
   openGraph: {
     url: "https://snap-binding.sammsamy.chatgpt.site",
     title: "SNAP — The small molecule binding instrument",
     description:
-      "Fit a real ligand into a real protein pocket while an exact local AutoGrid score responds to every move.",
+      "Fit ligands into prepared streptavidin and c-MET pockets while the same local AutoGrid engine responds to every move.",
     type: "website",
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SNAP — The small molecule binding instrument",
     description:
-      "A browser-native molecular recognition instrument with exact local AutoGrid scoring.",
+      "A browser-native molecular recognition instrument with two prepared targets and exact local AutoGrid scoring.",
     images: ["/snap-social.png"],
   },
   icons: {

@@ -34,6 +34,10 @@ test("server-renders the SNAP instrument shell without placeholder claims", asyn
     /<title>SNAP — The small molecule binding instrument<\/title>/i,
   );
   assert.match(html, /Loading PDB 1STP and its prepared AutoGrid field/i);
+  assert.match(html, /Streptavidin · biotin/i);
+  assert.match(html, /c-MET kinase · 1FN/i);
+  assert.match(html, /2 systems · 2 target-specific fields/i);
+  assert.match(html, /Compare poses within one target/i);
   assert.match(html, /score runs in this browser/i);
   assert.match(html, /Live pose trace/i);
   assert.match(html, /Rigid single-chain model/i);
