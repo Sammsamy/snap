@@ -33,7 +33,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 ### 0:30 to 0:42
 
-**Screen:** Drag or rotate the molecule once. Let the score and contact labels update, then press **Load exact challenge pose**. Do not reveal the answer yet.
+**Screen:** Drag or rotate the molecule once. Let the score and contact labels update, then scroll to **Can you read the fit?** and press **Load exact challenge pose**. Do not reveal the answer yet.
 
 **Say:**
 
@@ -41,7 +41,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 ### 0:42 to 1:10
 
-**Screen:** Scroll to **Can you read the fit?** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal the PDB pose**. Hold on the revealed pose and press **Capture observation**.
+**Screen:** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal the PDB pose**. Hold on the revealed pose and press **Capture observation**.
 
 **Say:**
 
