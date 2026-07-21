@@ -123,12 +123,13 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 - [x] Confirm there are no browser console errors on the deployed build.
 - [x] Confirm the public link works with no API key.
 - [x] Create the public repository and confirm the README renders correctly.
+- [x] Record and visually audit the clean 1280 by 720 screen master.
 - [ ] Record a real voiceover using `VIDEO_SCRIPT.md`.
 - [ ] Upload a public YouTube video shorter than three minutes with audio.
 - [ ] Replace the remaining YouTube URL placeholder in this file.
 - [ ] Include the Codex Session ID in the required submission field.
 - [ ] Select the Education category.
-- [ ] Complete the `/feedback` step if the submission form requires it.
+- [ ] Verify that the submitted Session ID is the `/feedback` ID from the primary Build Week thread.
 - [ ] Confirm every team, eligibility, ownership, and prior-work answer is accurate.
 - [x] Confirm SNAP is an individual entry and do not name the brother as a teammate.
 - [ ] Ask Fuzlullah for final approval immediately before the irreversible Devpost submission.
