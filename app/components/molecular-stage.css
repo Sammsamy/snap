@@ -1,0 +1,253 @@
+.molecular-stage {
+  position: relative;
+  width: 100%;
+  min-height: clamp(31rem, 72svh, 52rem);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(164, 205, 235, 0.16);
+  border-radius: clamp(1.25rem, 3vw, 2rem);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(20, 55, 73, 0.34), transparent 38%),
+    linear-gradient(145deg, #061019 0%, #02060a 58%, #071019 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -5rem 9rem rgba(0, 0, 0, 0.36),
+    0 2rem 7rem rgba(0, 0, 0, 0.42);
+  touch-action: none;
+}
+
+.molecular-stage::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(101, 224, 213, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(101, 224, 213, 0.035) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  mask-image: linear-gradient(to bottom, transparent, black 24%, transparent 82%);
+  opacity: 0.45;
+}
+
+.molecular-stage::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(circle, transparent 38%, rgba(0, 0, 0, 0.58) 100%);
+}
+
+.molecular-stage:focus-visible {
+  outline: 2px solid #68efd8;
+  outline-offset: 4px;
+}
+
+.molecular-stage__canvas {
+  position: absolute !important;
+  inset: 0;
+  z-index: 1;
+  cursor: grab;
+}
+
+.molecular-stage--manipulating .molecular-stage__canvas {
+  cursor: grabbing;
+}
+
+.molecular-stage--disabled .molecular-stage__canvas {
+  cursor: default;
+}
+
+.molecular-stage__specimen,
+.molecular-stage__controls,
+.molecular-stage__axis {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  color: rgba(221, 241, 246, 0.74);
+  font-family: var(--font-geist-mono, ui-monospace, monospace);
+  font-size: 0.66rem;
+  font-weight: 550;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.molecular-stage__mode-toggle {
+  position: absolute;
+  z-index: 5;
+  top: clamp(0.8rem, 2.5vw, 1.3rem);
+  right: clamp(0.8rem, 2.5vw, 1.3rem);
+  min-width: 6.8rem;
+  padding: 0.62rem 0.78rem;
+  border: 1px solid rgba(170, 212, 230, 0.24);
+  border-radius: 999px;
+  color: rgba(221, 241, 246, 0.86);
+  background: rgba(2, 7, 12, 0.68);
+  font-family: var(--font-geist-mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+}
+
+.molecular-stage__mode-toggle:hover:not(:disabled),
+.molecular-stage__mode-toggle:focus-visible {
+  border-color: rgba(104, 239, 216, 0.72);
+  color: #68efd8;
+  outline: none;
+}
+
+.molecular-stage__mode-toggle:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.molecular-stage__specimen {
+  top: clamp(1rem, 2.5vw, 1.5rem);
+  left: clamp(1rem, 2.5vw, 1.5rem);
+  display: flex;
+  max-width: calc(100% - 8rem);
+  align-items: center;
+  gap: 0.62rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.molecular-stage__specimen-dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  flex: 0 0 auto;
+  border: 1px solid rgba(112, 255, 225, 0.76);
+  border-radius: 50%;
+  background: rgba(77, 242, 211, 0.22);
+  box-shadow: 0 0 1rem rgba(77, 242, 211, 0.5);
+}
+
+.molecular-stage__controls {
+  bottom: clamp(1rem, 2.5vw, 1.45rem);
+  left: 50%;
+  max-width: calc(100% - 7rem);
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(170, 212, 230, 0.13);
+  border-radius: 999px;
+  background: rgba(2, 7, 12, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(14px);
+  translate: -50% 0;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.molecular-stage__axis {
+  right: clamp(1rem, 2.5vw, 1.5rem);
+  bottom: clamp(1rem, 2.5vw, 1.45rem);
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid rgba(164, 205, 235, 0.13);
+  border-radius: 50%;
+  background: rgba(3, 9, 14, 0.46);
+  backdrop-filter: blur(12px);
+}
+
+.molecular-stage__axis::before,
+.molecular-stage__axis::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: "";
+  background: rgba(209, 233, 241, 0.34);
+  transform-origin: left center;
+}
+
+.molecular-stage__axis::before {
+  width: 0.82rem;
+  height: 1px;
+}
+
+.molecular-stage__axis::after {
+  width: 0.72rem;
+  height: 1px;
+  rotate: -90deg;
+}
+
+.molecular-stage__axis-x,
+.molecular-stage__axis-y,
+.molecular-stage__axis-z {
+  position: absolute;
+  font-size: 0.52rem;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
+.molecular-stage__axis-x {
+  top: 1.03rem;
+  right: 0.28rem;
+  color: #ff6b78;
+}
+
+.molecular-stage__axis-y {
+  top: 0.2rem;
+  left: 1.04rem;
+  color: #5ef1c8;
+}
+
+.molecular-stage__axis-z {
+  right: 0.39rem;
+  bottom: 0.25rem;
+  color: #72a7ff;
+}
+
+.molecular-stage__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 42rem) {
+  .molecular-stage {
+    min-height: min(38rem, 68svh);
+    border-radius: 1.25rem;
+  }
+
+  .molecular-stage__controls {
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+    translate: 0 0;
+    font-size: 0.59rem;
+  }
+
+  .molecular-stage__axis {
+    display: none;
+  }
+
+  .molecular-stage__mode-toggle {
+    min-width: 6.3rem;
+    font-size: 0.54rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .molecular-stage,
+  .molecular-stage *,
+  .molecular-stage *::before,
+  .molecular-stage *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

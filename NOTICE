@@ -1,0 +1,18 @@
+SNAP
+Copyright (C) 2026 Fuzlullah Syed
+
+SPDX-License-Identifier: GPL-2.0-or-later
+
+SNAP is distributed under the GNU General Public License, version 2 or,
+at your option, any later version. See LICENSE.
+
+The bundled 1STP benchmark assets are derived from the pinned AutoDock-GPU
+repository and are conservatively redistributed under its
+GPL-2.0-or-later terms. Coordinate data originating from RCSB PDB are CC0.
+Exact upstream commits, source paths, hashes, copyright notices, trademark
+language, and no-endorsement disclosures are preserved in
+public/data/THIRD_PARTY_DATA.md.
+
+SNAP is an independent OpenAI Build Week project. It is not affiliated with
+or endorsed by the AutoDock authors, TU Darmstadt, CCSB Scripps, the Scripps
+Research Institute, or RCSB PDB.

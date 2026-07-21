@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+:root {
+  --night: #090b0d;
+  --night-soft: #11151a;
+  --night-lift: #181d22;
+  --bone: #f4f0e6;
+  --bone-dim: #a8a59c;
+  --line: rgb(244 240 230 / 0.15);
+  --line-strong: rgb(244 240 230 / 0.28);
+  --cyan: #72e7e1;
+  --cyan-dim: #2d827f;
+  --green: #b7f34a;
+  --amber: #f6bb47;
+  --clash: #ff5e4a;
+  --violet: #9f8cff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--night);
+  color: var(--bone);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 58% 42%, rgb(65 91 91 / 0.14), transparent 31rem),
+    radial-gradient(circle at 12% 0%, rgb(159 140 255 / 0.07), transparent 26rem),
+    var(--night);
+  color: var(--bone);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+::selection {
+  color: var(--night);
+  background: var(--green);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
