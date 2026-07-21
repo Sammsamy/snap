@@ -6,7 +6,7 @@ This file is working copy. Replace every bracketed placeholder before submission
 
 **Project name**
 
-SNAP
+SNAP: The Small-Molecule Binding Instrument
 
 **Submitter type**
 
