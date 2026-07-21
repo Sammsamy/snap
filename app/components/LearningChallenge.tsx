@@ -131,13 +131,15 @@ const EXPLANATION_OPTIONS: readonly {
   },
   {
     id: "clinical-affinity-proof",
-    title: "The result proves clinical binding affinity",
-    detail: "One rigid score establishes how the molecule behaves in patients.",
+    title: "The lowest displayed control establishes a global pose optimum",
+    detail:
+      "Because the reference beats these disclosed controls, no better rigid pose can exist elsewhere in the search space.",
   },
   {
     id: "drug-discovery-proof",
-    title: "The instrument discovered a new drug",
-    detail: "Matching a known experimental pose is equivalent to screening and validation.",
+    title: "Candidate-contact count directly determines the total score",
+    detail:
+      "Whichever pose has more geometric candidates must score better, regardless of the map, electrostatic, desolvation, or clash terms.",
   },
 ];
 

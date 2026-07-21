@@ -41,7 +41,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 ### 0:42 to 1:10
 
-**Screen:** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal the PDB pose**. Hold on the revealed pose and press **Capture observation**.
+**Screen:** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal the PDB pose**. Hold on the revealed pose and press **Capture controlled result**.
 
 **Say:**
 
