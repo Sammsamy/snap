@@ -70,7 +70,7 @@ Grab biotin inside a prepared streptavidin pocket. As you translate or rotate it
 
 SNAP turns a static pharmacology diagram into a zero-install, falsifiable browser instrument. Two pinned PDB systems run through one transparent scoring implementation with separate target-specific fields. A Predict → Reveal → Explain task compares a 15 degree challenge pose with the prepared PDB-derived reference. An atom lens verifies that ligand-atom deltas sum to the pose delta. Then a blind c-MET transfer check exposes the counterexample: the score improves while candidate markers fall.
 
-SNAP is designed for pose-level intuition. It is not docking, affinity prediction, or a clinical tool.
+SNAP is designed for pose-level intuition. It is not docking, affinity prediction, or a clinical tool. No physician review or clinical validation was performed, and SNAP makes no diagnostic, treatment, safety, or efficacy claim.
 
 ## Inspiration
 

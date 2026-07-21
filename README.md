@@ -62,6 +62,8 @@ The contribution lens is equally bounded. It reports each ligand atom's change i
 
 SNAP is a rigid-pose interaction instrument for intuition and education. It is not a docking search, affinity predictor, molecular-dynamics engine, or clinical tool.
 
+No physician review or clinical validation was performed. SNAP makes no diagnostic, treatment, safety, or efficacy claim.
+
 - Receptor and ligand are rigid in both systems.
 - There is no conformational search, minimization, or torsional optimization.
 - Protonation, AutoDock atom types, and Gasteiger partial charges are prepared inputs.
