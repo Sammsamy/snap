@@ -32,18 +32,19 @@ Point out the current target, score, clash count, candidate contacts, and scient
 ### 1:00 to 3:00 | Make the 1STP prediction
 
 1. Select **1STP · streptavidin · biotin** and press **Start fitting**.
-2. Reset to the exact challenge pose if necessary. The disclosed start is about `+4.37`.
-3. Open **Can you read the fit?**
-4. Require each learner to choose what will happen to the score and clash count before revealing the prepared pose.
+2. Open **Can you read the fit?** and press **Load exact challenge pose** if the controlled baseline is not already confirmed. The disclosed start is about `+4.37`.
+3. Require each learner to choose what will happen to the score and clash count.
+4. Press **Lock prediction** before revealing the prepared pose.
 
 Prompt: *If the molecule moves from this 15 degree control to the prepared PDB-derived pose, what should change, and why?*
 
 ### 3:00 to 5:00 | Reveal and inspect
 
-1. Reveal the prepared pose.
+1. Press **Reveal prepared pose**, wait for the reference to lock, and press **Capture controlled result**.
 2. Record the observed change: score `+4.37 → −8.97`; clash markers `4 → 0`.
-3. Turn on **Atom contribution lens**.
-4. Inspect the three largest ligand-atom contributions and the conservation line showing that the displayed atom deltas sum to the displayed pose delta.
+3. Choose **The readout compares two prepared poses in this local model**, then press **Grade explanation**. This creates the local task receipt required for the blind transfer step.
+4. Turn on **Atom contribution lens**.
+5. Inspect the three largest ligand-atom contributions and the conservation line showing that the displayed atom deltas sum to the displayed pose delta.
 
 Ask: *Which evidence belongs to the score, and which evidence is a separate geometric explanation?*
 
@@ -108,7 +109,7 @@ SNAP has not been shown to improve learning. The following is a proposed evaluat
 4. Repeat them 24 to 72 hours later and add one unseen prepared-target transfer item.
 5. Define the primary outcome before collecting data: change in a rubric-scored explanation, not time on page or number of clicks.
 6. Record completion failures and accessibility issues separately from concept scores.
-7. Collect only consented, deidentified responses under the instructor's applicable review and privacy process. SNAP itself transmits or stores no learner response data.
+7. Collect only consented, deidentified responses under the instructor's applicable review and privacy process. SNAP does not transmit or persist learner responses; it retains predictions and receipts only in open-page memory until refresh.
 
 Report the sample, missing data, rubric, and all planned outcomes. Do not claim efficacy until the protocol has been run and the results support it.
 
