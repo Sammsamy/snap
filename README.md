@@ -27,14 +27,14 @@ Lower scores are more favorable for this fixed prepared system.
 
 The prepared PDB pose beats these disclosed controls and sits in a favorable local basin under this model. That does **not** prove a global optimum and does not predict biological affinity.
 
-## Five-second judge path
+## Judge path
 
 1. Press **Start fitting**.
 2. See the disclosed 15° challenge pose begin at approximately +4.37 with visible clash markers.
 3. Drag the bright biotin molecule or use the arrow keys, then watch the score, live pose trace, candidate contact residues, distances, and clashes update.
-4. Press **Reveal the PDB pose**.
+4. Load the exact challenge pose, then run the controlled **Predict → Reveal → Explain** task before inspecting the answer elsewhere.
 5. See the molecule converge on the public co-crystal coordinates and the score settle at approximately −8.97.
-6. Run the controlled **Predict → Reveal → Explain** task and receive a local reasoning receipt based on the observed deltas.
+6. Receive a local reasoning receipt based on the observed score, clash, and candidate-contact deltas, then inspect the proof controls.
 
 Keyboard controls are built in: arrows translate, Page Up/Page Down move in depth, Shift + arrows rotate, and Q/E roll. The stage respects reduced-motion preferences.
 

@@ -98,10 +98,10 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 1. Open `https://snap-binding.sammsamy.chatgpt.site` with no login.
 2. Press **Start fitting** and confirm the 15 degree challenge pose scores `+4.37`.
 3. Move or rotate biotin and watch the score, clashes, and candidate contacts update.
-4. Press **Reveal the PDB pose** and confirm the animation settles at `−8.97` with zero clash markers.
-5. Scroll to **The pose came from experiment. The score did not.**
-6. Compare the three disclosed control scores and inspect the formula.
-7. Run **Can you read the fit?** and confirm the graded path is reset pose → PDB reveal → observed-delta explanation.
+4. Load the exact challenge pose, scroll to **Can you read the fit?**, and commit to a prediction before revealing the answer.
+5. Run the graded path: locked prediction → PDB reveal → captured observation → evidence-bounded explanation.
+6. Confirm the reveal settles at `−8.97` with zero clash markers and produces a local 2-of-2 reasoning receipt for the correct path.
+7. Only then scroll to **The pose came from experiment. The score did not.**, compare the disclosed control scores, and inspect the formula.
 8. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
 
 ## Final submission checklist
