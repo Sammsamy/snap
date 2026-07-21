@@ -2,13 +2,13 @@
 
 **Grab a real small molecule, fit it into a prepared protein pocket, and watch an authentic AutoGrid4 pose score respond in real time.**
 
-SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. It ships two pinned AutoDock-GPU benchmarks: streptavidin–biotin from PDB 1STP and c-MET kinase with experimental inhibitor 1FN from PDB 3CE3. Move either rigid ligand, inspect candidate contacts and steric overlaps, then reveal its prepared co-crystal input pose. The same browser engine samples a separate target-specific field for each system.
+SNAP turns a static molecular-recognition diagram into a falsifiable browser instrument. It ships two pinned AutoDock-GPU benchmarks: streptavidin–biotin from PDB 1STP and c-MET kinase with experimental inhibitor 1FN from PDB 3CE3. Move either rigid ligand, inspect candidate contacts and steric overlaps, then reveal its prepared co-crystal input pose. The same browser engine samples a separate target-specific field for each system. An optional atom contribution lens colors the ligand by current-minus-challenge score changes and verifies, at displayed precision, that the atom deltas sum back to the pose delta.
 
 The score runs entirely in the browser. There is no API call, server calculation, account, paid credit, or model in the interaction loop.
 
 **[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**
 
-## What the demo proves
+## What the demo demonstrates
 
 SNAP is not a distance-to-answer trick. Each ligand atom samples the official target-specific AutoGrid maps with x-fast trilinear interpolation:
 
@@ -45,14 +45,17 @@ The 3CE3 controlled path changes from `+145.80 / 17 clashes / 4 candidate contac
 1. Press **Start fitting**.
 2. See the disclosed 15° challenge pose begin at approximately +4.37 with visible clash markers.
 3. Drag the bright biotin molecule or use the arrow keys, then watch the score, live pose trace, candidate contact residues, distances, and clashes update.
-4. Load the exact challenge pose, then run the controlled **Predict → Reveal → Explain** task before inspecting the answer elsewhere.
-5. See the molecule converge on the prepared co-crystal input and the score settle at approximately −8.97.
-6. Receive a local reasoning receipt based on the observed score, clash, and candidate-contact deltas, then inspect the proof controls.
-7. Switch to **3CE3 · c-MET kinase · 1FN** and confirm that the same engine loads a separate field, starts at +145.80, and reveals −11.64.
+4. Turn on **Atom contribution lens**. The three largest modeled per-ligand-atom changes are exposed, and a rounding-aware conservation line verifies `Σ atom Δ = pose Δ` at displayed precision.
+5. Load the exact challenge pose, then run the controlled **Predict → Reveal → Explain** task before inspecting the answer elsewhere.
+6. See the molecule converge on the prepared co-crystal input and the score settle at approximately −8.97.
+7. Receive a local task receipt based on the observed score, clash, and candidate-contact deltas, then inspect the proof controls.
+8. Switch to **3CE3 · c-MET kinase · 1FN** and confirm that the same engine loads a separate field, starts at +145.80, and reveals −11.64.
 
 Keyboard controls are built in: arrows translate, Page Up/Page Down move in depth, Shift + arrows rotate, and Q/E roll. The stage respects reduced-motion preferences.
 
-The learning task captures one deterministic comparison for the selected target: the exact 15° reset pose to the locked prepared reference. It grades the prediction against the score and clash changes that actually occurred and labels the system in the receipt. The receipt stays in memory for that browser session and is explicitly not evidence of learning efficacy or clinical validation.
+The learning task captures one deterministic comparison for the selected target: the exact 15° reset pose to the locked prepared reference. It grades the prediction against the score and clash changes that actually occurred. A page-memory observation record can retain one labelled receipt per target while the page remains open; it clears on refresh, transmits nothing, never combines the target-specific scores, and is explicitly not evidence of competence, learning efficacy, or clinical validation.
+
+The contribution lens is equally bounded. It reports each ligand atom's change in AutoGrid map, electrostatic, and desolvation contributions relative to that target's disclosed challenge pose. It does not assign energies to receptor residues, predict affinity, or compare targets. The implementation fails closed unless every atom is inside the grid and all per-atom term sums conserve the scorer-owned total within a rounding-aware tolerance.
 
 ## Scientific boundary
 
@@ -83,7 +86,9 @@ Pinned public structures + official benchmark maps
                     ↓
  prepared atoms + target-specific 8-channel Float32 grids
                     ↓
-      browser trilinear scorer (exact total)
+      browser trilinear scorer (scorer-owned total)
+                    ↓
+ per-ligand-atom delta lens + conservation check
                     ↓
  bounded pair geometry (visual explanation only)
                     ↓
@@ -93,8 +98,10 @@ Pinned public structures + official benchmark maps
 Important files:
 
 - `app/lib/scoring.ts` — rigid transforms, exact AutoGrid interpolation, and bounded explanation geometry.
+- `app/lib/contributionLens.ts` — same-system atom deltas, fail-closed validation, stable driver ranking, and rounding-aware conservation checks.
 - `app/components/MolecularStage.tsx` — instanced molecular rendering, drag/rotate controls, contacts, pocket glow, and reduced-motion support.
 - `app/components/SnapExperience.tsx` — asset hydration, scoring policy, reveal animation, audio cue, and explanatory UI.
+- `app/components/TwoTargetObservationRecord.tsx` — page-memory, target-labelled task receipts with no score aggregation or persistence.
 - `scripts/prepare_1stp.py` — reproducible public-data preparation.
 - `scripts/validate_1stp_assets.py` — hashes, coordinate checks, binary/JSON parity, and reference/decoy score checks.
 - `VIDEO_SCRIPT.md`, `SUBMISSION.md`, and `JUDGE_QA.md` — the recording script, Devpost copy, release checklist, and hostile-question guardrails.
@@ -105,6 +112,8 @@ Important files:
 - `public/data/3ce3-system.json` — compact c-MET/1FN prepared system, frozen-pose boundary, and exact control panel.
 - `public/data/3ce3-autogrid.f32` and `3ce3-autogrid-runtime.json` — the second target's eight-channel runtime grid and manifest.
 - `tests/second-system.test.ts` — public-file hashes, channel layout, all-atoms-in-grid checks, and exact four-pose 3CE3 verification.
+- `tests/contribution-lens.test.ts` — atom identity/order checks, cross-system rejection, accessible tone mapping, ranking, and conservation invariants.
+- `tests/two-target-observation-record.test.ts` — target-safe upserts, both completion orders, wrong-response retention, accessible markup, and no-storage checks.
 - `research/second-system/` — pinned upstream inputs, preparation/build scripts, manifests, licenses, and independent release-candidate verifiers for 3CE3.
 
 ## Run locally
@@ -140,6 +149,8 @@ Codex helped the team:
 - implement and test x-fast trilinear map scoring and quaternion pose transforms;
 - build the Three.js interaction stage, keyboard access, reduced-motion behavior, and responsive interface;
 - design and adversarially test the controlled predict–reveal–explain task;
+- derive and test a per-ligand-atom contribution lens whose deltas conserve every displayed score term;
+- turn the two guided tasks into one coherent page-memory observation record without implying mastery or learning efficacy;
 - run separate science, licensing, hostile-judge, copy, and live-browser audits;
 - catch the single-chain biological-assembly limitation, an interpolation-boundary mismatch, false clash labels, and a misleading cross-target visual scale before release.
 

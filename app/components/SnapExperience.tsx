@@ -7,12 +7,15 @@ import {
   FlaskConical,
   Grab,
   RotateCcw,
+  ScanSearch,
   Sparkles,
   Volume2,
   VolumeX,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import {
+  type CSSProperties,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
@@ -21,6 +24,7 @@ import {
 } from "react";
 import {
   MolecularStage,
+  type LigandAtomHighlight,
   type MolecularInteraction,
   type MolecularPose,
   type MolecularSystem,
@@ -28,8 +32,14 @@ import {
 } from "./MolecularStage";
 import {
   LearningChallenge,
+  type LearningChallengeReceipt,
   type LearningChallengePoseState,
 } from "./LearningChallenge";
+import {
+  TwoTargetObservationRecord,
+  upsertTargetObservation,
+  type TwoTargetObservations,
+} from "./TwoTargetObservationRecord";
 import {
   scorePose,
   scorePoseWithAutoGrid,
@@ -37,10 +47,21 @@ import {
   type LigandPose,
   type MolecularAtom as ScoringAtom,
 } from "../lib/scoring";
+import {
+  CONTRIBUTION_TONE_STYLES,
+  createContributionLens,
+  type ContributionLensResult,
+} from "../lib/contributionLens";
 import "./snap-experience.css";
 
 type Vec3 = [number, number, number];
 type QuaternionTuple = [number, number, number, number];
+
+const CONTRIBUTION_TONE_ORDER = [
+  "favorable",
+  "neutral",
+  "unfavorable",
+] as const;
 
 interface StructureAtom {
   id: string | number;
@@ -191,6 +212,7 @@ interface TargetDefinition {
   disclosure: string;
   ligandShortName: string;
   learningContextLabel: string;
+  observationContextLabel: string;
   visualBadScoreKey:
     | "rotated15DegreesScore"
     | "translatedZPlus1AngstromScore";
@@ -223,6 +245,7 @@ const TARGETS: Record<TargetId, TargetDefinition> = {
     disclosure: "Prepared chain A field · public heavy-atom co-crystal pose",
     ligandShortName: "biotin",
     learningContextLabel: "1STP · streptavidin / biotin",
+    observationContextLabel: "Streptavidin · biotin",
     visualBadScoreKey: "rotated15DegreesScore",
     loadingLabel: "Loading PDB 1STP and its prepared AutoGrid field",
     introKicker: "A real molecule. A prepared scoring field.",
@@ -252,6 +275,7 @@ const TARGETS: Record<TargetId, TargetDefinition> = {
     disclosure: "Experimental 1FN · five frozen torsions · not an approved medicine",
     ligandShortName: "1FN",
     learningContextLabel: "3CE3 · c-MET / experimental inhibitor 1FN",
+    observationContextLabel: "c-MET · experimental inhibitor 1FN",
     visualBadScoreKey: "translatedZPlus1AngstromScore",
     loadingLabel: "Loading PDB 3CE3 and its target-specific AutoGrid field",
     introKicker: "A second target. The same live scoring path.",
@@ -726,6 +750,118 @@ function ScoreTrace({
   );
 }
 
+function formatDelta(value: number): string {
+  if (!Number.isFinite(value) || Math.abs(value) < 0.005) return "0.00";
+  return `${value > 0 ? "+" : "−"}${Math.abs(value).toFixed(2)}`;
+}
+
+function AtomContributionLens({
+  enabled,
+  onToggle,
+  lens,
+  state,
+  ligandAtoms,
+  fallback,
+}: {
+  enabled: boolean;
+  onToggle: () => void;
+  lens: Readonly<ContributionLensResult> | null;
+  state: "ready" | "outside-grid" | "invalid" | "unavailable";
+  ligandAtoms: readonly ScoringAtom[];
+  fallback: ReactNode;
+}) {
+  const hasVisibleChange =
+    (lens?.topContributors[0]?.absoluteTotalDelta ?? 0) >= 0.005;
+
+  return (
+    <section className="atom-lens" aria-label="Per-ligand-atom contribution lens">
+      <button
+        className="atom-lens__toggle"
+        type="button"
+        aria-pressed={enabled}
+        disabled={state === "unavailable"}
+        onClick={onToggle}
+      >
+        <span><ScanSearch size={15} /> Atom contribution lens</span>
+        <span className="atom-lens__state">{enabled ? "On" : "Off"}</span>
+      </button>
+
+      {!enabled ? fallback : (
+        <div className="atom-lens__panel">
+          <div className="atom-lens__legend" aria-label="Contribution color key">
+            {CONTRIBUTION_TONE_ORDER.map((tone) => {
+              const style = CONTRIBUTION_TONE_STYLES[tone];
+              return (
+                <span
+                  key={tone}
+                  style={{ "--legend-color": style.hex } as CSSProperties}
+                >
+                  <i /> {style.label}
+                </span>
+              );
+            })}
+          </div>
+          <p className="atom-lens__intro">
+            Current minus this target&apos;s exact 15° challenge pose. Negative
+            atom deltas are more favorable in the prepared field.
+          </p>
+
+          {state === "outside-grid" ? (
+            <p className="atom-lens__paused" role="status">
+              Lens paused. Return every ligand atom inside the prepared grid.
+            </p>
+          ) : state === "invalid" ? (
+            <p className="atom-lens__paused" role="status">
+              Lens hidden because the atom-sum conservation check did not verify.
+            </p>
+          ) : lens ? (
+            <>
+              {hasVisibleChange ? (
+                <ol className="atom-lens__drivers" aria-label="Largest absolute atom contribution changes">
+                  {lens.topContributors.map((contribution) => {
+                    const atom = ligandAtoms[contribution.atomIndex];
+                    const label = atom?.name?.trim() || `Atom ${contribution.atomId}`;
+                    return (
+                      <li
+                        className="atom-lens__driver"
+                        key={contribution.atomId}
+                        style={{ "--driver-color": contribution.style.hex } as CSSProperties}
+                      >
+                        <b>{label} · {contribution.mapType}</b>
+                        <strong>{formatDelta(contribution.delta.total)}</strong>
+                        <small>
+                          {contribution.style.label} · map {formatDelta(contribution.delta.affinity)} · electro {formatDelta(contribution.delta.electrostatics)} · solv {formatDelta(contribution.delta.desolvation)}
+                        </small>
+                      </li>
+                    );
+                  })}
+                </ol>
+              ) : (
+                <p className="atom-lens__paused">
+                  No per-atom change reaches the 0.005 display threshold. The
+                  conservation check still uses the underlying scorer values
+                  before two-decimal display rounding.
+                </p>
+              )}
+              <div className="atom-lens__verification">
+                <Check size={13} aria-hidden="true" />
+                <span>
+                  Sum verified: Σ atom Δ {formatDelta(lens.conservation.atomSumDelta.total)} = pose Δ {formatDelta(lens.totalDelta)}
+                </span>
+              </div>
+            </>
+          ) : null}
+
+          <p className="atom-lens__boundary">
+            Per-ligand-atom grid samples only. Not receptor-residue energies,
+            binding affinity, or a cross-target comparison.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function LoadingSpecimen({ label }: { label: string }) {
   return (
     <div className="loading-specimen" role="status">
@@ -773,6 +909,9 @@ export function SnapExperience() {
     rotation: START_ROTATION,
   });
   const [muted, setMuted] = useState(false);
+  const [atomLensEnabled, setAtomLensEnabled] = useState(false);
+  const [targetObservations, setTargetObservations] =
+    useState<TwoTargetObservations>({});
   const [hasMoved, setHasMoved] = useState(false);
   const [scoreTrace, setScoreTrace] = useState<number[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -798,6 +937,32 @@ export function SnapExperience() {
       setSelectedTarget(targetId);
     },
     [selectedTarget],
+  );
+
+  const handleObservationTargetSelect = useCallback(
+    (targetId: TargetId) => {
+      handleTargetSelect(targetId);
+      requestAnimationFrame(() => {
+        document
+          .querySelector<HTMLButtonElement>(`[data-target-id="${targetId}"]`)
+          ?.focus();
+      });
+    },
+    [handleTargetSelect],
+  );
+
+  const handleLearningComplete = useCallback(
+    (receipt: LearningChallengeReceipt) => {
+      setTargetObservations((current) =>
+        upsertTargetObservation(
+          current,
+          selectedTarget,
+          activeTarget.observationContextLabel,
+          receipt,
+        ),
+      );
+    },
+    [activeTarget.observationContextLabel, selectedTarget],
   );
 
   useEffect(() => {
@@ -899,8 +1064,63 @@ export function SnapExperience() {
       evaluatedPairs: geometry.evaluatedPairs,
       outsideGridAtoms: autoGrid.outsideGridAtoms,
     };
-    return { autoGrid, geometry, visible, initialScore: initial.total };
+    return { autoGrid, geometry, visible, initial };
   }, [activeTarget.visualBadScoreKey, bundle, grid, pose, system]);
+
+  const atomLens = useMemo<{
+    result: Readonly<ContributionLensResult> | null;
+    state: "ready" | "outside-grid" | "invalid" | "unavailable";
+  }>(() => {
+    if (!system || !scoring) return { result: null, state: "unavailable" };
+    if (scoring.autoGrid.outsideGridAtoms > 0) {
+      return { result: null, state: "outside-grid" };
+    }
+    try {
+      return {
+        result: createContributionLens(
+          {
+            systemId: system.system.id,
+            poseLabel: "exact 15° challenge pose",
+            score: scoring.initial,
+          },
+          {
+            systemId: system.system.id,
+            poseLabel:
+              mode === "locked"
+                ? "prepared co-crystal input pose"
+                : "current pose",
+            score: scoring.autoGrid,
+          },
+        ),
+        state: "ready",
+      };
+    } catch {
+      return { result: null, state: "invalid" };
+    }
+  }, [mode, scoring, system]);
+
+  const ligandAtomColors = useMemo(
+    () =>
+      atomLensEnabled && atomLens.result
+        ? atomLens.result.contributions.map(
+            (contribution) => contribution.style.hex,
+          )
+        : undefined,
+    [atomLens.result, atomLensEnabled],
+  );
+
+  const ligandAtomHighlights = useMemo<readonly LigandAtomHighlight[] | undefined>(
+    () =>
+      atomLensEnabled &&
+      atomLens.result &&
+      (atomLens.result.topContributors[0]?.absoluteTotalDelta ?? 0) >= 0.005
+        ? atomLens.result.topContributors.map((contribution) => ({
+            index: contribution.atomIndex,
+            color: contribution.style.hex,
+          }))
+        : undefined,
+    [atomLens.result, atomLensEnabled],
+  );
 
   const interactions = useMemo<MolecularInteraction[]>(() => {
     if (!bundle || !scoring) return [];
@@ -1117,7 +1337,7 @@ export function SnapExperience() {
   const visibleScore = scoring?.visible ?? null;
   const challengeScore =
     system?.validation?.gridChecks?.rotated15DegreesScore ??
-    scoring?.initialScore ??
+    scoring?.initial.total ??
     0;
   const translationScore =
     system?.validation?.gridChecks?.[activeTarget.translation.scoreKey];
@@ -1179,6 +1399,7 @@ export function SnapExperience() {
               <button
                 className={selected ? "is-active" : undefined}
                 type="button"
+                data-target-id={targetId}
                 aria-pressed={selected}
                 onClick={() => handleTargetSelect(targetId)}
                 key={targetId}
@@ -1227,6 +1448,8 @@ export function SnapExperience() {
                 pose={pose}
                 score={stageScore}
                 interactions={interactions}
+                ligandAtomColors={ligandAtomColors}
+                ligandAtomHighlights={ligandAtomHighlights}
                 onPoseChange={handlePoseChange}
                 crystalPose={bundle.crystalPose}
                 showCrystalGhost={mode === "revealing"}
@@ -1274,6 +1497,22 @@ export function SnapExperience() {
             >
               <RotateCcw size={15} /> 15° challenge pose
             </motion.div>
+          )}
+
+          {atomLensEnabled && atomLens.result && (
+            <div className="atom-lens-stage-key" aria-hidden="true">
+              {CONTRIBUTION_TONE_ORDER.map((tone) => {
+                const style = CONTRIBUTION_TONE_STYLES[tone];
+                return (
+                  <span
+                    key={tone}
+                    style={{ "--legend-color": style.hex } as CSSProperties}
+                  >
+                    <i /> {style.label}
+                  </span>
+                );
+              })}
+            </div>
           )}
         </div>
 
@@ -1323,16 +1562,25 @@ export function SnapExperience() {
             <div><strong>{visibleScore?.clashes ?? "—"}</strong><span>clashes</span></div>
             <div><strong>{visibleScore?.evaluatedPairs.toLocaleString() ?? "—"}</strong><span>pairs checked</span></div>
           </div>
-          <ScoreTrace
-            values={
-              scoreTrace.length > 0
-                ? scoreTrace
-                : visibleScore && visibleScore.outsideGridAtoms === 0
-                  ? [visibleScore.total]
-                  : []
+          <AtomContributionLens
+            enabled={atomLensEnabled}
+            onToggle={() => setAtomLensEnabled((current) => !current)}
+            lens={atomLens.result}
+            state={atomLens.state}
+            ligandAtoms={bundle?.ligand ?? []}
+            fallback={
+              <ScoreTrace
+                values={
+                  scoreTrace.length > 0
+                    ? scoreTrace
+                    : visibleScore && visibleScore.outsideGridAtoms === 0
+                      ? [visibleScore.total]
+                      : []
+                }
+                baseline={challengeScore}
+                outsideGrid={(visibleScore?.outsideGridAtoms ?? 0) > 0}
+              />
             }
-            baseline={challengeScore}
-            outsideGrid={(visibleScore?.outsideGridAtoms ?? 0) > 0}
           />
           <div className="model-boundary">
             <Sparkles size={14} />
@@ -1364,6 +1612,13 @@ export function SnapExperience() {
         isReadoutValid={(visibleScore?.outsideGridAtoms ?? 1) === 0}
         onResetChallengePose={resetAttempt}
         onRevealReferencePose={revealExperimentalPose}
+        onComplete={handleLearningComplete}
+      />
+
+      <TwoTargetObservationRecord
+        observations={targetObservations}
+        activeTarget={selectedTarget}
+        onSelectTarget={handleObservationTargetSelect}
       />
 
       <section className="proof-section" aria-labelledby="proof-title">

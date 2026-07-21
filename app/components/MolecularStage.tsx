@@ -67,6 +67,12 @@ export interface ScoreBreakdown {
   terms?: Record<string, number>;
 }
 
+export interface LigandAtomHighlight {
+  /** Zero-based index into `system.ligand.atoms`. */
+  index: number;
+  color: string;
+}
+
 export type MolecularInteractionKind =
   | "hydrogen-bond"
   | "clash"
@@ -102,6 +108,10 @@ export interface MolecularStageProps {
   pose: MolecularPose;
   score: ScoreBreakdown | null;
   interactions: MolecularInteraction[];
+  /** Optional per-ligand-atom colors, in `system.ligand.atoms` order. */
+  ligandAtomColors?: readonly string[];
+  /** Optional emphasis shells around selected ligand atoms. */
+  ligandAtomHighlights?: readonly LigandAtomHighlight[];
   onPoseChange: (next: MolecularPose, meta: PoseChangeMeta) => void;
   crystalPose?: MolecularPose;
   showCrystalGhost?: boolean;
@@ -147,6 +157,8 @@ export function MolecularStage({
   pose,
   score,
   interactions,
+  ligandAtomColors,
+  ligandAtomHighlights,
   onPoseChange,
   crystalPose,
   showCrystalGhost = false,
@@ -298,6 +310,8 @@ export function MolecularStage({
           pose={displayPose}
           scoreQuality={scoreQuality}
           interactions={interactions}
+          ligandAtomColors={ligandAtomColors}
+          ligandAtomHighlights={ligandAtomHighlights}
           onPoseChange={onPoseChange}
           crystalPose={crystalPose}
           showCrystalGhost={showCrystalGhost && clampedReveal < 1}
@@ -367,6 +381,8 @@ interface MolecularSceneProps {
   pose: MolecularPose;
   scoreQuality: number;
   interactions: MolecularInteraction[];
+  ligandAtomColors?: readonly string[];
+  ligandAtomHighlights?: readonly LigandAtomHighlight[];
   onPoseChange: MolecularStageProps["onPoseChange"];
   crystalPose?: MolecularPose;
   showCrystalGhost: boolean;
@@ -383,6 +399,8 @@ function MolecularScene({
   pose,
   scoreQuality,
   interactions,
+  ligandAtomColors,
+  ligandAtomHighlights,
   onPoseChange,
   crystalPose,
   showCrystalGhost,
@@ -460,6 +478,8 @@ function MolecularScene({
           atoms={system.ligand.atoms}
           bonds={system.ligand.bonds ?? []}
           pose={pose}
+          atomColors={ligandAtomColors}
+          atomHighlights={ligandAtomHighlights}
           disabled={disabled}
           onPoseChange={onPoseChange}
           onManipulatingChange={onManipulatingChange}
@@ -599,6 +619,8 @@ interface InteractiveLigandProps {
   atoms: MolecularAtom[];
   bonds: MolecularBond[];
   pose: MolecularPose;
+  atomColors?: readonly string[];
+  atomHighlights?: readonly LigandAtomHighlight[];
   disabled: boolean;
   onPoseChange: MolecularStageProps["onPoseChange"];
   onManipulatingChange: (active: boolean) => void;
@@ -609,6 +631,8 @@ function InteractiveLigand({
   atoms,
   bonds,
   pose,
+  atomColors,
+  atomHighlights,
   disabled,
   onPoseChange,
   onManipulatingChange,
@@ -750,6 +774,8 @@ function InteractiveLigand({
       atoms={atoms}
       bonds={bonds}
       pose={pose}
+      atomColors={atomColors}
+      atomHighlights={atomHighlights}
       onPointerDown={beginDrag}
       onPointerMove={continueDrag}
       onPointerUp={endDrag}
@@ -763,6 +789,8 @@ interface LigandModelProps {
   bonds: MolecularBond[];
   pose?: MolecularPose;
   ghost?: boolean;
+  atomColors?: readonly string[];
+  atomHighlights?: readonly LigandAtomHighlight[];
   onPointerDown?: (event: ThreeEvent<PointerEvent>) => void;
   onPointerMove?: (event: ThreeEvent<PointerEvent>) => void;
   onPointerUp?: (event: ThreeEvent<PointerEvent>) => void;
@@ -775,6 +803,8 @@ function LigandModel({
   bonds,
   pose = IDENTITY_POSE,
   ghost = false,
+  atomColors,
+  atomHighlights,
   onPointerDown,
   onPointerMove,
   onPointerUp,
@@ -798,12 +828,15 @@ function LigandModel({
       scale.setScalar(radius);
       matrix.compose(position, quaternion, scale);
       mesh.setMatrixAt(index, matrix);
-      mesh.setColorAt(index, new THREE.Color(atomColor(atom)));
+      mesh.setColorAt(
+        index,
+        new THREE.Color(!ghost && atomColors?.[index] ? atomColors[index] : atomColor(atom)),
+      );
     });
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     mesh.computeBoundingSphere();
-  }, [atoms]);
+  }, [atomColors, atoms, ghost]);
 
   return (
     <group
@@ -831,6 +864,36 @@ function LigandModel({
       })}
       {atoms.length ? (
         <>
+          {!ghost
+            ? atomHighlights?.map((highlight, rank) => {
+                const atom = atoms[highlight.index];
+                if (!atom) return null;
+                const radius = Math.max(atom.radius ?? 1, 0.08) * 0.68;
+                return (
+                  <group key={`highlight-${atom.id}`} position={atom.position}>
+                    <mesh scale={radius} renderOrder={7}>
+                      <icosahedronGeometry args={[1, 2]} />
+                      <meshBasicMaterial
+                        color={highlight.color}
+                        wireframe
+                        transparent
+                        opacity={rank === 0 ? 0.48 : 0.28}
+                        depthWrite={false}
+                        blending={THREE.AdditiveBlending}
+                      />
+                    </mesh>
+                    {rank === 0 ? (
+                      <pointLight
+                        color={highlight.color}
+                        intensity={1.8}
+                        distance={1.7}
+                        decay={2}
+                      />
+                    ) : null}
+                  </group>
+                );
+              })
+            : null}
           {!ghost ? (
             <>
               <pointLight color="#ffd27a" intensity={0.65} distance={5.5} decay={2} />

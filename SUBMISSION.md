@@ -38,7 +38,7 @@ https://github.com/Sammsamy/snap
 
 ## Short description
 
-SNAP is a browser instrument for molecular recognition. A user can move and rotate a rigid ligand inside either of two prepared protein pockets while the same client-side AutoGrid scorer updates on every move. The default 1STP streptavidin–biotin system teaches a canonical fit; a selectable 3CE3 c-MET system shows that the engine generalizes to a separate target-specific field for experimental inhibitor 1FN. Steric clashes flash red, plausible candidate contacts appear in cyan, and a controlled predict–reveal–explain task grades the user against changes that actually occurred.
+SNAP is a browser instrument for molecular recognition. A user can move and rotate a rigid ligand inside either of two prepared protein pockets while the same client-side AutoGrid scorer updates on every move. The default 1STP streptavidin–biotin system teaches a canonical fit; a selectable 3CE3 c-MET system shows that the engine generalizes to a separate target-specific field for experimental inhibitor 1FN. Steric clashes flash red, plausible candidate contacts appear in cyan, an atom contribution lens shows the largest modeled ligand-atom contributors to the score change, and a controlled predict–reveal–explain task grades the user against changes that actually occurred.
 
 ## Inspiration
 
@@ -50,13 +50,14 @@ SNAP loads two authentic prepared benchmarks: 1STP streptavidin–biotin and 3CE
 
 The 1STP path starts from a disclosed 15 degree control at `+4.37` and reveals the prepared input at `−8.97`; a half ångström translation scores `−4.67`. The 3CE3 path starts at `+145.80` with 17 clashes and reveals `−11.64` with one clash; audited translations score `−0.09` and `+3.03`. These controls are visible so a judge can test that the response is not a distance animation or hard-coded success state. Scores are target-specific and are never compared between systems as affinity.
 
-SNAP also renders candidate hydrogen-bond geometry, steric clashes, residue names, contact distances, and individual score terms. Its guided task starts only from the exact reset pose, permits only the prepared-reference reveal as the graded action, labels the selected system, and produces an in-memory reasoning receipt. Both systems are rigid prepared teaching models. SNAP does not search poses, predict affinity, prove learning efficacy, or replace docking software.
+SNAP also renders candidate hydrogen-bond geometry, steric clashes, residue names, contact distances, and individual score terms. Its optional atom lens computes current-minus-challenge deltas for every ligand atom and fails closed unless those atom deltas verify against every scorer-owned term and the total within a rounding-aware tolerance. Its guided task starts only from the exact reset pose, permits only the prepared-reference reveal as the graded action, and produces a target-labelled receipt. The open page can retain one receipt per system in a two-target observation record; it clears on refresh and never combines the target-specific scores. Both systems are rigid prepared teaching models. SNAP does not search poses, predict affinity, prove learning efficacy, or replace docking software.
 
 ## How we built it
 
 - React, TypeScript, Three.js, React Three Fiber, and WebGL for the interactive instrument
 - Public 1STP and 3CE3 coordinates with pinned prepared AutoDock-GPU benchmark maps
 - Exact x-fast trilinear interpolation over eight client-side AutoGrid channels
+- A per-ligand-atom contribution lens with same-target guards and rounding-aware score-conservation checks at displayed precision
 - A separate bounded interaction pass for explanatory clash and hydrogen bond markers
 - Reproducible Python preparation and validation scripts with recorded SHA-256 hashes
 - Browser, rendered-shell, deterministic scoring, boundary, and scientific-control tests
@@ -66,7 +67,7 @@ There is no paid model call in the runtime. GPT-5.6 and Codex were the build too
 
 ## Challenges
 
-The hard part was not drawing molecules. It was making the visual response scientifically inspectable. We had to preserve AutoGrid file order, implement trilinear sampling at grid boundaries, keep out-of-grid states explicit, separate scoring from explanatory contact geometry, and prevent false clash labels for donor hydrogen to acceptor contacts.
+The hard part was not drawing molecules. It was making the visual response scientifically inspectable. We had to preserve AutoGrid file order, implement trilinear sampling at grid boundaries, keep out-of-grid states explicit, verify atom-level score deltas against the aggregate at displayed precision, separate scoring from explanatory contact geometry, and prevent false clash labels for donor hydrogen to acceptor contacts.
 
 We also found boundaries during the audit that the interface now states directly. The 1STP benchmark score uses deposited chain A while a neighboring subunit contributes a tetramer contact. The 3CE3 ligand has five frozen torsions and three prepared polar hydrogens; its 41 inferred bonds are display-only. One explanatory clash marker remains at its prepared pose but is separate from the AutoGrid total.
 
@@ -76,8 +77,9 @@ We also found boundaries during the audit that the interface now states directly
 - A real prepared scoring field that reacts continuously rather than a distance-to-answer heuristic
 - A dramatic and reproducible `+4.37` to `−8.97` reveal path
 - A live pose trace that makes the 13.34 point improvement visible during the reveal
+- A color-and-text atom contribution lens whose displayed atom deltas pass a rounding-aware check against the displayed pose delta
 - Visible residue identities, distances, clashes, and score components
-- A controlled predict–reveal–explain task with an observed-delta reasoning receipt
+- A controlled predict–reveal–explain task with an observed-delta receipt and page-memory two-target record
 - Two selectable prepared targets using one scoring implementation and separate audited fields
 - Reproducible assets with checksums and independent validation controls
 - Honest product boundaries inside the interface, not hidden in fine print
@@ -99,14 +101,15 @@ GPT-5.6, Codex, TypeScript, React, Three.js, React Three Fiber, WebGL, Python, A
 1. Open `https://snap-binding.sammsamy.chatgpt.site` with no login.
 2. Press **Start fitting** and confirm the 15 degree challenge pose scores `+4.37`.
 3. Move or rotate biotin and watch the score, clashes, and candidate contacts update.
-4. Load the exact challenge pose, scroll to **Can you read the fit?**, and commit to a prediction before revealing the answer.
-5. Run the graded path: locked prediction → prepared-pose reveal → captured observation → evidence-bounded explanation.
-6. Confirm the reveal settles at `−8.97` with zero clash markers and produces a local 2-of-2 reasoning receipt for the correct path.
-7. Only then scroll to **The heavy-atom pose came from experiment. The score did not.**, compare the disclosed control scores, and inspect the formula.
-8. Select **3CE3 · c-MET kinase · 1FN**, press **Start fitting**, and confirm `+145.80 / 17 clashes / 4 candidates`.
-9. Reveal the prepared pose and confirm `−11.64 / 1 clash / 3 candidates`; note the visible experimental-inhibitor and five-frozen-torsion boundaries.
-10. Switch back to 1STP and confirm the default path resets cleanly.
-11. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
+4. Turn on **Atom contribution lens**, reveal the prepared pose, and confirm the UI reports `Σ atom Δ = pose Δ` while naming the three largest ligand-atom drivers.
+5. Load the exact challenge pose, scroll to **Can you read the fit?**, and commit to a prediction before revealing the answer.
+6. Run the graded path: locked prediction → prepared-pose reveal → captured observation → evidence-bounded explanation.
+7. Confirm the reveal settles at `−8.97` with zero clash markers and produces a local 2-of-2 task receipt for the correct path.
+8. Only then scroll to **The heavy-atom pose came from experiment. The score did not.**, compare the disclosed control scores, and inspect the formula.
+9. Select **3CE3 · c-MET kinase · 1FN**, press **Start fitting**, and confirm `+145.80 / 17 clashes / 4 candidates`.
+10. Complete the second controlled task, confirm `−11.64 / 1 clash / 3 candidates`, and inspect the two-target observation record. Each card stands alone; no scores are combined or compared.
+11. Switch back to 1STP and confirm its completed page-memory record remains while the active task resets cleanly.
+12. Open the repository README for provenance, limitations, validation commands, and the Codex collaboration record.
 
 ## Final submission checklist
 

@@ -67,7 +67,7 @@ export interface LearningChallengeReceipt {
   };
   correctChecks: number;
   totalChecks: 2;
-  scope: "Single-session task receipt only; it does not demonstrate learning efficacy, clinical validation, or population outcomes, and it is not stored.";
+  scope: "Single-session task receipt retained only in open-page memory, cleared on refresh, and never sent; it does not demonstrate learning efficacy, clinical validation, or population outcomes.";
 }
 
 export interface LearningChallengeProps {
@@ -234,7 +234,7 @@ export function createLearningReceipt(
     correctChecks: Number(preCorrect) + Number(postCorrect),
     totalChecks: 2,
     scope:
-      "Single-session task receipt only; it does not demonstrate learning efficacy, clinical validation, or population outcomes, and it is not stored.",
+      "Single-session task receipt retained only in open-page memory, cleared on refresh, and never sent; it does not demonstrate learning efficacy, clinical validation, or population outcomes.",
   };
 }
 
@@ -585,7 +585,7 @@ export function LearningChallenge({
                   })}
                 </fieldset>
                 <div className="learning-challenge__action-row learning-challenge__action-row--end">
-                  <span className="learning-challenge__scope">No API · no storage · one controlled session</span>
+                  <span className="learning-challenge__scope">No API · no persistent storage · open-page memory only</span>
                   <button
                     className="learning-challenge__primary"
                     type="submit"
@@ -651,7 +651,7 @@ export function LearningChallenge({
               </div>
 
               <p className="learning-challenge__receipt-scope">
-                {contextLabel} · Exact reset baseline → Reveal prepared pose → locked reference. Generated locally and not stored. This receipt is not learning-efficacy, clinical-validation, or population evidence.
+                {contextLabel} · Exact reset baseline → Reveal prepared pose → locked reference. Retained only on this open page, cleared on refresh, and never sent. This receipt is not learning-efficacy, clinical-validation, or population evidence.
               </p>
             </div>
           </div>

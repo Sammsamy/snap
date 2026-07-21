@@ -14,6 +14,10 @@ It is not a distance-to-pose heuristic. For each ligand atom, SNAP trilinearly s
 
 The default reveal uses the PDB-derived prepared 1STP input and scores it independently at `−8.97`. Moving it 0.5 Å gives `−4.67`, while the 15 degree control gives `+4.37`. The separate 3CE3 field gives `−11.64` for its prepared input, `−0.09` and `+3.03` for translations, and `+145.80` for the 15 degree control. We do not claim either pose is a global minimum.
 
+## Is the atom contribution lens inventing an explanation after the fact?
+
+No. The scorer already produces map, electrostatic, and desolvation contributions for every ligand atom. The lens subtracts the exact 15 degree challenge contribution from the current contribution, rejects cross-system or out-of-grid comparisons, and checks that every atom delta sums back to each aggregate term and the displayed pose delta. It is a ligand-atom decomposition of this prepared field, not a receptor-residue energy assignment or affinity explanation.
+
 ## Is biotin a drug?
 
 No. It is a small-molecule benchmark and a canonical molecular-recognition system. The value of the prototype is teaching pose-level intuition that also matters in drug-target reasoning.
@@ -56,7 +60,7 @@ The underlying scoring science is not new, and interactive molecular systems hav
 
 ## What would make this a real learning product?
 
-SNAP now asks learners to predict a controlled contrast, observe it, and explain only what it supports on either target. A real learning product would measure pre/post performance and transfer across learners and systems. This release proves the task and scoring instrument, not learning efficacy.
+SNAP now asks learners to predict a controlled contrast, observe it, and explain only what it supports on either target. The two-target observation record merely retains completed task receipts while the page is open; it is not a badge, mastery score, or competence measure. A real learning product would measure pre/post performance and transfer across learners and systems. This release demonstrates the task and scoring instrument, not learning efficacy.
 
 ## What is the one-sentence pitch?
 
