@@ -8,6 +8,8 @@ SNAP was conceived and built during OpenAI Build Week; the public repository his
 
 The score runs entirely in the browser. There is no API call, server calculation, account, paid credit, or model in the interaction loop.
 
+The intended audience is preclinical pharmacology, medicinal-chemistry, and molecular-biology learners and educators. An instructor can share one URL, ask for a prediction, and use the controlled reveal plus second-target counterexample as a discussion experiment without an install or account.
+
 **[Open the public instrument](https://snap-binding.sammsamy.chatgpt.site)** · **[Inspect the public repository](https://github.com/Sammsamy/snap)**
 
 ![SNAP live 1STP challenge view with biotin, the local score, overlaps, and candidate contacts](docs/snap-instrument-3x2.jpg)

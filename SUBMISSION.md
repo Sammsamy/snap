@@ -80,6 +80,10 @@ SNAP was conceived and built during OpenAI Build Week; its public commit history
 
 SNAP is designed for pose-level intuition. It is not docking, affinity prediction, or a clinical tool. No physician review or clinical validation was performed, and SNAP makes no diagnostic, treatment, safety, or efficacy claim.
 
+## Who it is for
+
+SNAP is for preclinical pharmacology, medicinal-chemistry, and molecular-biology learners and educators who have seen lock-and-key figures but have never been able to test a pose themselves. There is no install, account, API key, or GPU cluster: an instructor can share one URL, ask for a prediction, and use the controlled reveal and second-target counterexample as a discussion experiment.
+
 ## Inspiration
 
 One of pharmacology's central abstractions is also one of its least tactile: how a small molecule sits inside a protein pocket. Students are asked to reason about shape complementarity, steric overlap, electrostatics, and hydrogen-bond geometry from flat figures.
