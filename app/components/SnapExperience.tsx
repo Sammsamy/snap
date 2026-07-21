@@ -1117,9 +1117,20 @@ export function SnapExperience() {
         <div className="build-credit">Built with GPT-5.6 in Codex · scoring runs in this browser</div>
       </footer>
 
+      <LearningChallenge
+        currentScore={visibleScore?.total ?? null}
+        contacts={contactReadout}
+        candidateContactCount={visibleScore?.hydrogenBonds ?? null}
+        clashes={visibleScore?.clashes ?? null}
+        poseState={learningPoseState}
+        isReadoutValid={(visibleScore?.outsideGridAtoms ?? 1) === 0}
+        onResetChallengePose={resetAttempt}
+        onRevealReferencePose={revealExperimentalPose}
+      />
+
       <section className="proof-section" aria-labelledby="proof-title">
         <div className="proof-heading">
-          <span className="proof-index">02 / PROOF</span>
+          <span className="proof-index">03 / PROOF</span>
           <h2 id="proof-title">The pose came from experiment. The score did not.</h2>
           <p>
             The reference coordinates are public PDB data. SNAP independently
@@ -1155,17 +1166,6 @@ export function SnapExperience() {
           </p>
         </div>
       </section>
-
-      <LearningChallenge
-        currentScore={visibleScore?.total ?? null}
-        contacts={contactReadout}
-        candidateContactCount={visibleScore?.hydrogenBonds ?? null}
-        clashes={visibleScore?.clashes ?? null}
-        poseState={learningPoseState}
-        isReadoutValid={(visibleScore?.outsideGridAtoms ?? 1) === 0}
-        onResetChallengePose={resetAttempt}
-        onRevealReferencePose={revealExperimentalPose}
-      />
     </main>
   );
 }

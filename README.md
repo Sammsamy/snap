@@ -117,6 +117,7 @@ Codex helped the team:
 - write the reproducible preparation and independent validator;
 - implement and test x-fast trilinear map scoring and quaternion pose transforms;
 - build the Three.js interaction stage, keyboard access, reduced-motion behavior, and responsive interface;
+- design and adversarially test the controlled predict–reveal–explain task;
 - run separate science, licensing, hostile-judge, copy, and live-browser audits;
 - catch the single-chain biological-assembly limitation, an interpolation-boundary mismatch, and false clash labels before release.
 
@@ -133,6 +134,7 @@ SNAP is released as a whole under **GPL-2.0-or-later**. See [`LICENSE`](LICENSE)
 - RCSB PDB coordinate data are provided under the [RCSB PDB usage policy / CC0](https://www.rcsb.org/pages/usage-policy).
 - AutoDock-GPU benchmark PDBQT/map assets are pinned to commit `89fd1c5e6b4639c22e9a2bea4cc805c42347fffb` and conservatively redistributed under the upstream repository's GPL-2.0-or-later terms.
 - Exact source paths, SHA-256 hashes, copyright/trademark notices, no-endorsement language, and the upstream license are in [`public/data/THIRD_PARTY_DATA.md`](public/data/THIRD_PARTY_DATA.md).
+- [`public/snap-social.png`](public/snap-social.png) is an illustrative promotional image generated with OpenAI's image tool during Build Week. It is not a rendering of PDB 1STP and is not used by the scientific instrument.
 - SNAP is independent and is not affiliated with or endorsed by the AutoDock authors, TU Darmstadt, CCSB Scripps, the Scripps Research Institute, or RCSB PDB.
 
 ## Primary references

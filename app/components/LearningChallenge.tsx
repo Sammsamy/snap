@@ -358,7 +358,7 @@ export function LearningChallenge({
     >
       <header className="learning-challenge__header">
         <div>
-          <span className="learning-challenge__index">03 / LEARN</span>
+          <span className="learning-challenge__index">02 / LEARN</span>
           <h2 id={`${instanceId}-title`}>Can you read the fit?</h2>
           <p>
             Predict one controlled comparison. Reveal the known pose. Explain only what the local evidence supports.

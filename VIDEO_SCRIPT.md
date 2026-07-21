@@ -31,39 +31,39 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 “This is biotin inside a real streptavidin structure from PDB 1STP. It starts only fifteen degrees away from the prepared experimental pose. That small mistake is enough to push the local score to plus 4.37, create four steric clashes, and change which residues can make plausible hydrogen bond contacts.”
 
-### 0:30 to 0:50
+### 0:30 to 0:42
 
-**Screen:** Drag or rotate the molecule once. Let the score and contact labels update. Then press **Reveal the PDB pose**.
-
-**Say:**
-
-“I can move the molecule in six degrees of freedom, and every move resamples the prepared AutoGrid field here in the browser. When I reveal the deposited pose, the score is not hard coded. The molecule moves to the public coordinates and SNAP independently scores that position.”
-
-### 0:50 to 1:05
-
-**Screen:** Hold on the revealed pose. Show `−8.97`, zero clashes, the contact residue names, and the score components.
+**Screen:** Drag or rotate the molecule once. Let the score and contact labels update, then press **Load exact challenge pose**. Do not reveal the answer yet.
 
 **Say:**
 
-“The result is minus 8.97, with no clash markers. The live trace shows a 13.34 point improvement. The interface names the candidate contact residues and their distances, and exposes the atom type, electrostatic, and desolvation terms instead of hiding them behind one number.”
+“I can move the molecule in six degrees of freedom, and every move resamples the prepared AutoGrid field here in the browser. But exploration alone does not show whether I understand the readout, so I reset to the exact challenge pose before committing to a prediction.”
 
-### 1:05 to 1:20
+### 0:42 to 1:10
+
+**Screen:** Scroll to **Can you read the fit?** Choose **A lower score, with fewer clashes**, press **Lock prediction**, then press **Reveal the PDB pose**. Hold on the revealed pose and press **Capture observation**.
+
+**Say:**
+
+“Before seeing the answer, I predict that the deposited pose will lower the score and remove clashes. SNAP now forces the controlled reset-to-reference comparison. The result is minus 8.97 with zero clashes, a 13.34 point improvement. The observation is graded against what actually happened, not a hard-coded success screen.”
+
+### 1:10 to 1:25
+
+**Screen:** Choose **The readout compares two prepared poses in this local model**, submit it, and show the 2 of 2 local receipt.
+
+**Say:**
+
+“I then have to explain what the result means. This is a comparison of two prepared poses in a local model, not clinical affinity or drug discovery. The receipt records both reasoning checks locally and makes no claim that one task proves learning.”
+
+### 1:25 to 1:43
 
 **Screen:** Scroll to the proof section. Point to the three control scores and the equation.
 
 **Say:**
 
-“Here is the falsifiable check. The prepared PDB pose scores minus 8.97. Moving it half an ångström weakens the score to minus 4.67. Rotating it fifteen degrees makes it unfavorable at plus 4.37. The same scorer produces all three results.”
+“Here is the falsifiable check. The prepared PDB pose scores minus 8.97. Moving it half an ångström weakens the score to minus 4.67. Rotating it fifteen degrees makes it unfavorable at plus 4.37. The same scorer produces all three results, and the terms are exposed instead of hidden behind one number.”
 
-### 1:20 to 1:40
-
-**Screen:** Scroll to **Can you read the fit?** Reset the controlled trial, choose **A lower score, with fewer clashes**, reveal the PDB pose, and show the explanation choices or final receipt.
-
-**Say:**
-
-“Then SNAP turns that contrast into a controlled learning task. I commit to a prediction, the app forces the exact reset-to-reference comparison, and it grades me against the score and clash changes that actually happened. The receipt stays local and does not pretend one task proves learning.”
-
-### 1:40 to 1:58
+### 1:43 to 2:01
 
 **Screen:** Show the README section named “How GPT-5.6 and Codex were used,” then briefly show the scoring tests or terminal result.
 
@@ -71,7 +71,7 @@ Record the browser at 1280 by 720 or larger. Use your real voice. A brief camera
 
 “We built SNAP with GPT-5.6 in Codex. It helped us prepare and audit the public molecular assets, implement the trilinear scoring path, test the interaction geometry, and attack our own claims. The runtime itself needs no paid model call. The scoring stays local and keeps working after the page loads.”
 
-### 1:58 to 2:10
+### 2:01 to 2:13
 
 **Screen:** Return to the glowing revealed complex and SNAP wordmark.
 

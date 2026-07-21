@@ -2,10 +2,12 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://snap-binding.sammsamy.chatgpt.site"),
   title: "SNAP — The small molecule binding instrument",
   description:
     "Hold a real molecule, explore a real protein pocket, and watch a transparent local interaction score respond to every move.",
   openGraph: {
+    url: "https://snap-binding.sammsamy.chatgpt.site",
     title: "SNAP — The small molecule binding instrument",
     description:
       "Fit a real ligand into a real protein pocket while an exact local AutoGrid score responds to every move.",
